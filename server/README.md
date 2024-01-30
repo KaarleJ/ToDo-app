@@ -1,0 +1,1 @@
+This is an empty directory for now. The plan is to build the backend with Spring Boot.
