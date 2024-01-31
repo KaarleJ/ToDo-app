@@ -10,7 +10,7 @@
     {
       "id": 2,
       "title": "Take out the trash",
-      "text": "Trash has been in the bin for a while now",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultrices, nunc nisl aliquam nunc, eget aliquet ni",
       "completed": false,
       "authorId": 1
     },
@@ -27,6 +27,20 @@
       "text": "You shouldn't see this",
       "completed": false,
       "authorId": 2
+    },
+    {
+      "id": 5,
+      "title": "Do homework",
+      "text": "You need to do your homework",
+      "completed": false,
+      "authorId": 1
+    },
+    {
+      "id": 6,
+      "title": "Go to the gym",
+      "text": "You need to go to the gym",
+      "completed": false,
+      "authorId": 1
     }
   ]
 }
