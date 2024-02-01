@@ -3,7 +3,7 @@ export interface Todo {
   title: string;
   text: string;
   completed: boolean;
-  deadline?: Date | null | undefined; 
+  deadLine?: Date | string | null | undefined;
 }
 
 export interface User {

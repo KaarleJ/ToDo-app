@@ -6,13 +6,16 @@ import { Todo } from "../types";
 const useTodos = () => {
   const { user } = useAuth();
   const [todos, setTodos] = useState<Todo[]>([]);
+  console.log(user);
 
   useEffect(() => {
+    console.log("useEffect");
     if (!user) {
+      setTodos([]);
       return;
     }
     const fetchTodos = async () => {
-      const response = await axios.get("http://localhost:4000/todos", {
+      const response = await axios.get<Todo[]>("http://localhost:4000/todos", {
         params: {
           authorId: user.id,
         },
@@ -23,17 +26,70 @@ const useTodos = () => {
     fetchTodos();
   }, [user]);
 
-  const postTodo = async (title: string, text: string) => {
-    const response = await axios.post("http://localhost:4000/todos", {
+  const postTodo = async (
+    title: string,
+    text: string,
+    deadLine: string
+  ) => {
+
+    let date: string | undefined;
+    if (deadLine.length === 0) {
+      date = undefined;
+    } else {
+      date = deadLine;
+    }
+
+    const response = await axios.post<Todo>("http://localhost:4000/todos", {
       title,
       text,
+      deadLine: date,
+      completed: false,
       authorId: user?.id,
     });
     const todo = response.data;
     setTodos([...todos, todo]);
-  }
+  };
 
-  return { user, todos, postTodo };
+  const putTodo = async (
+    id: number,
+    title: string,
+    text: string,
+    completed: boolean,
+    deadLine: string
+  ) => {
+    let date: string | undefined;
+    if (deadLine.length === 0) {
+      date = undefined;
+    } else {
+      date = deadLine;
+    }
+    const response = await axios.put<Todo>(
+      `http://localhost:4000/todos/${id}`,
+      {
+        title,
+        text,
+        completed,
+        deadLine: date,
+        authorId: user?.id,
+      }
+    );
+    const todo = response.data;
+    setTodos(
+      todos.map((t) => {
+        if (t.id === id) {
+          return todo;
+        }
+        return t;
+      })
+    );
+  };
+
+  const deleteTodo = async (id: number) => {
+    await axios.delete<Todo>(`http://localhost:4000/todos/${id}`);
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  return { todos, postTodo, putTodo, deleteTodo };
 };
 
 export default useTodos;

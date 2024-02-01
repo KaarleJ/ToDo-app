@@ -1,18 +1,51 @@
 import { Todo } from "../../types";
+import TodoForm from "../TodoForm";
 
 interface EditCardProps {
-  todo: Todo,
-  setAction: (action: "edit" | "view" | "delete") => void;
+  todo: Todo;
+  onClose: () => void;
+  putTodo: (
+    id: number,
+    title: string,
+    text: string,
+    completed: boolean,
+    deadLine: string
+  ) => Promise<void>;
 }
 
-const EditCard = ({ todo, setAction }: EditCardProps) => {
+const EditCard = ({ todo, onClose, putTodo }: EditCardProps) => {
+  const handlePutTodo = async ({
+    title,
+    text,
+    completed,
+    deadLine,
+  }: {
+    title: string;
+    text: string;
+    deadLine: string;
+    completed: boolean;
+  }) => {
+    await putTodo(todo.id, title, text, completed, deadLine);
+    onClose();
+  };
+
+  let date: string | undefined;
+  if (typeof todo.deadLine !== "string") {
+    date = '';
+  } else {
+    date = todo.deadLine;
+  }
 
   return (
-    <div className="relative px-8 py-5 max-w-72 sm:max-w-lg xl:max-w-3xl">
-      Edit here
-    </div>
+    <>
+      <TodoForm
+        className="p-10"
+        title="Create a new ToDo"
+        initialValues={{ title: todo.title, text: todo.text, deadLine: date, completed: todo.completed }}
+        onSubmit={handlePutTodo}
+      />
+    </>
   );
-  
 };
 
 export default EditCard;
