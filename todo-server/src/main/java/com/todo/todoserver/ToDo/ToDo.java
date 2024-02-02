@@ -1,9 +1,22 @@
 package com.todo.todoserver.ToDo;
 
-import java.time.LocalDate;
-import java.util.Date;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
+@Entity
+@Table
 public class ToDo {
+    @Id
+    @SequenceGenerator(
+            name = "todo_sequence",
+            sequenceName = "todo_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "todo_sequence"
+    )
     private Long id;
     private String title;
     private String text;

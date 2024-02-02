@@ -1,21 +1,41 @@
 package com.todo.todoserver.ToDo;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+@Service
 public class ToDoService {
 
-    public List<ToDo> getTodos() {
-        return List.of(
-                new ToDo(
-                        1L,
-                        "TestTodo",
-                        "This todo is just for testing",
-                        false,
-                        LocalDate.of(2024, Month.FEBRUARY, 24)
+    private final ToDoRepository toDoRepository;
 
-                )
-        );
+    @Autowired
+    public ToDoService(ToDoRepository toDoRepository) {
+        this.toDoRepository = toDoRepository;
+    }
+
+    public List<ToDo> getTodos() {
+        return toDoRepository.findAll();
+    }
+
+    public ToDo updateToDo(ToDo toDo) {
+        Optional<ToDo> optionalToDo = toDoRepository.findById(toDo.getId());
+
+        if (optionalToDo.isPresent()) {
+            ToDo toDo1 = optionalToDo.get();
+
+            toDo1.setTitle(toDo.getTitle());
+            toDo1.setText(toDo.getText());
+            toDo1.setCompleted(toDo.getCompleted());
+            toDo1.setDeadLine(toDo.getDeadLine());
+
+            toDoRepository.save(toDo1);
+
+            return toDo1;
+        }
+
+        return null;
     }
 }
