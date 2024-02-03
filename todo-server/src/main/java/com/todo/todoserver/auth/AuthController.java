@@ -18,20 +18,20 @@ public class AuthController {
 
 
   @PostMapping("/register")
-  public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest registerRequest) {
+  public ResponseEntity<?> register(@RequestBody AuthRequest registerRequest) {
     try {
       return ResponseEntity.ok(authService.register(registerRequest));
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new AuthResponse("Error registering: " + e.getMessage()));
+      return ResponseEntity.badRequest().body("Error registering: " + e.getMessage());
     }
   }
 
   @PostMapping("/login")
-  public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest registerRequest) {
+  public ResponseEntity<?> login(@RequestBody AuthRequest registerRequest) {
     try {
       return ResponseEntity.ok(authService.login(registerRequest));
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(new AuthResponse("Error logging in: " + e.getMessage()));
+      return ResponseEntity.badRequest().body("Error logging in: " + e.getMessage());
     }
   }
 }

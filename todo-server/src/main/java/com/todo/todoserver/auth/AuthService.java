@@ -33,6 +33,7 @@ public class AuthService {
         var jwt = jwtService.generateToken(user);
         return AuthResponse.builder()
             .jwt(jwt)
+            .user(user)
             .build();
     }
 
@@ -48,6 +49,7 @@ public class AuthService {
         var jwt = jwtService.generateToken(user);
         return AuthResponse.builder()
             .jwt(jwt)
+            .user(user)
             .build();
     }
 }

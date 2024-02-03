@@ -68,11 +68,11 @@ public class ToDoService {
         return toDoRepository.save(todo);
     }
 
-    public void deleteToDo(ToDo toDo, HttpServletRequest req) {
+    public void deleteToDo(Long id, HttpServletRequest req) {
         String jwt = req.getHeader("Authorization").substring(7);
         String username = jwtService.extractUsername(jwt);
         User user = userRepository.findByUsername(username).orElseThrow();
-        Optional<ToDo> optionalToDo = toDoRepository.findById(toDo.getId());
+        Optional<ToDo> optionalToDo = toDoRepository.findById(id);
 
         if (optionalToDo.isPresent()) {
             ToDo toDo1 = optionalToDo.get();

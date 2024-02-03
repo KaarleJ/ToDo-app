@@ -4,7 +4,6 @@ import axios from "axios";
 
 function useAuth() {
   const [user, setUser] = useState<User>();
-  console.log(user);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,48 +19,34 @@ function useAuth() {
   }, []);
 
   const login = async (username: string, password: string) => {
-    /*
-    const { data } = await axios.post<{ user: User; token: string }>(
-      "http://localhost:4000/login",
+  
+    const { data } = await axios.post<{ user: User, jwt: string }>(
+      "http://localhost:8080/api/auth/login",
       {
         username,
         password,
       }
     );
 
-    const { token, user } = data;
-    localStorage.setItem("token", token);
+    const { jwt, user } = data;
+    localStorage.setItem("token", jwt);
     setUser(user);
     return user;
-    */
-
-    localStorage.setItem("token", "veryvalidtoken");
-    setUser({
-      username: "Baldur",
-      id: 1,
-    });
   };
 
   const register = async (username: string, password: string) => {
-    /*
-    const { data } = await axios.post<{ user: User; token: string }>(
-      "http://localhost:4000/register",
+    const { data } = await axios.post<{ user: User; jwt: string }>(
+      "http://localhost:8080/api/auth/register",
       {
         username,
         password,
       }
     );
 
-    const { token, user } = data;
-    localStorage.setItem("token", token);
+    const { jwt, user } = data;
+    localStorage.setItem("token", jwt);
     setUser(user);
     return user;
-    */
-    localStorage.setItem("token", "veryvalidtoken");
-    setUser({
-      username: "Baldur",
-      id: 1,
-    });
   };
 
   const logOut = () => {

@@ -5,8 +5,8 @@ import { User } from "../types";
 
 interface AppBarProps {
   user?: User
-  login: (username: string, password: string) => Promise<void>
-  register: (username: string, password: string) => Promise<void>
+  login: (username: string, password: string) => Promise<User>
+  register: (username: string, password: string) => Promise<User>
   logOut: () => void
 }
 
