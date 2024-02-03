@@ -2,13 +2,18 @@ package com.todo.todoserver.ToDo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/todos")
@@ -22,17 +27,35 @@ public class ToDoController {
     }
 
     @GetMapping
-    public List<ToDo> getTodos() {
-        return toDoService.getTodos();
+    public Optional<List<ToDo>> getTodos(HttpServletRequest req) {
+        return toDoService.getTodos(req);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateToDo(@RequestBody ToDo toDo) {
+    public ResponseEntity<?> updateToDo(@RequestBody ToDo toDo, HttpServletRequest req) {
         try {
-            ToDo updatedTodo = toDoService.updateToDo(toDo);
-            return ResponseEntity.ok(updatedTodo);
+            return ResponseEntity.ok(toDoService.updateToDo(toDo, req));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error updating todo: " + e.getMessage());
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addNewToDo(@RequestBody ToDoRequest treq, HttpServletRequest req) {
+        try {
+            return ResponseEntity.ok(toDoService.addNewToDo(treq, req));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error adding new todo: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteToDo(@RequestBody ToDo toDo, HttpServletRequest req) {
+        try {
+            toDoService.deleteToDo(toDo, req);
+            return ResponseEntity.ok("Todo deleted");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error deleting todo: " + e.getMessage());
         }
     }
 }
