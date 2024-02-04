@@ -7,16 +7,12 @@ function useAuth() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = {
-      username: "Baldur",
-      id: 1,
-    };
     if (token) {
       setUser(user);
     } else {
       setUser(undefined);
     }
-  }, []);
+  }, [user]);
 
   const login = async (username: string, password: string) => {
 

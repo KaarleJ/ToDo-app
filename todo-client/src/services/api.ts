@@ -4,6 +4,8 @@ import { User } from "../types";
 
 const baseUrl = process.env.BASE_URL || "http://localhost:8080";
 
+console.log("baseUrl", baseUrl);
+
 export const postTodoApi = async (
   title: string,
   text: string,
