@@ -2,9 +2,14 @@ import axios from "axios";
 import { Todo } from "../types";
 import { User } from "../types";
 
-const baseUrl = process.env.BASE_URL || "http://localhost:8080";
+let baseUrl: string;
 
-console.log("baseUrl", baseUrl);
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    baseUrl = 'http://localhost:8080'; // replace with your development server URL
+} else {
+    baseUrl = 'https://springtodoapp.fly.dev'; // replace with your production server URL
+}
+
 
 export const postTodoApi = async (
   title: string,
