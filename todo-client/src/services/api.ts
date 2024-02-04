@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Todo } from "../types";
+import { User } from "../types";
 
 const baseUrl = process.env.BASE_URL || "http://localhost:8080";
 
@@ -66,5 +67,27 @@ export const fetchTodosApi = async () => {
       'Authorization': `Bearer ${localStorage.getItem("token")}`,
     },
   });
+  return response.data;
+}
+
+export const loginApi = async (username: string, password: string) => {
+  const response = await axios.post<{ user: User, jwt: string }>(
+    `${baseUrl}/api/auth/login`,
+    {
+      username,
+      password,
+    }
+  );
+  return response.data;
+}
+
+export const registerApi = async (username: string, password: string) => {
+  const response = await axios.post<{ user: User, jwt: string }>(
+    `${baseUrl}/api/auth/register`,
+    {
+      username,
+      password,
+    }
+  );
   return response.data;
 }

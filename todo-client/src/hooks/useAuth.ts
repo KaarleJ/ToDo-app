@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
+import { loginApi, registerApi } from "../services/api";
 import { User } from "../types";
-import axios from "axios";
 
 function useAuth() {
   const [user, setUser] = useState<User>();
@@ -19,31 +19,15 @@ function useAuth() {
   }, []);
 
   const login = async (username: string, password: string) => {
-  
-    const { data } = await axios.post<{ user: User, jwt: string }>(
-      "http://localhost:8080/api/auth/login",
-      {
-        username,
-        password,
-      }
-    );
 
-    const { jwt, user } = data;
+    const { jwt, user } = await loginApi(username, password);
     localStorage.setItem("token", jwt);
     setUser(user);
     return user;
   };
 
   const register = async (username: string, password: string) => {
-    const { data } = await axios.post<{ user: User; jwt: string }>(
-      "http://localhost:8080/api/auth/register",
-      {
-        username,
-        password,
-      }
-    );
-
-    const { jwt, user } = data;
+    const { jwt, user } = await registerApi(username, password);
     localStorage.setItem("token", jwt);
     setUser(user);
     return user;
@@ -52,8 +36,7 @@ function useAuth() {
   const logOut = () => {
     localStorage.removeItem("token");
     setUser(undefined);
-  }
-    
+  };
 
   return { user, login, register, logOut };
 }
