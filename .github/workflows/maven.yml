@@ -11,6 +11,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      PSQL_URL: ${{ secrets.PSQL_URL}}
+      PSQL_UN: ${{ secrets.PSQL_UN }}
+      PSQL_PW: ${{ secrets.PSQL_PW }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
     steps:
     - uses: actions/checkout@v3
 
