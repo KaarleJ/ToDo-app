@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TodoServerApplication {
 
 	public static void main(String[] args) {
-		System.out.println(System.getenv("SECRET_KEY"));
 		SpringApplication.run(TodoServerApplication.class, args);
 	}
 
