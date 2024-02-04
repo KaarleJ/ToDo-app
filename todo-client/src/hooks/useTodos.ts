@@ -1,8 +1,7 @@
 import useAuth from "./useAuth";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Todo } from "../types";
-import { postTodoApi, putTodoApi, deleteTodoApi } from "../services/api";
+import { postTodoApi, putTodoApi, deleteTodoApi, fetchTodosApi } from "../services/api";
 
 const useTodos = () => {
   const { user } = useAuth();
@@ -14,15 +13,7 @@ const useTodos = () => {
       return;
     }
     const fetchTodos = async () => {
-      const response = await axios.get<Todo[]>(
-        "/api/todos",
-        {
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const todos = response.data;
+      const todos = await fetchTodosApi();
       setTodos(todos);
     };
     fetchTodos();

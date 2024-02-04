@@ -1,13 +1,15 @@
 import axios from "axios";
 import { Todo } from "../types";
 
+const baseUrl = process.env.BASE_URL || "http://localhost:8080";
+
 export const postTodoApi = async (
   title: string,
   text: string,
   deadLine: string | undefined
 ) => {
   const response = await axios.post<Todo>(
-    "/api/todos",
+    `${baseUrl}/api/todos`,
     {
       title,
       text,
@@ -15,7 +17,7 @@ export const postTodoApi = async (
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
       },
     }
@@ -31,7 +33,7 @@ export const putTodoApi = async (
   deadLine: string | undefined
 ) => {
   const response = await axios.put<Todo>(
-    "/api/todos",
+    `${baseUrl}/api/todos`,
     {
       id,
       title,
@@ -41,7 +43,7 @@ export const putTodoApi = async (
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
       },
     }
@@ -50,10 +52,19 @@ export const putTodoApi = async (
 };
 
 export const deleteTodoApi = async (id: number) => {
-  await axios.delete<Todo>(`/api/todos/${id}`, {
+  await axios.delete<Todo>(`${baseUrl}/api/todos/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
   });
 };
+
+export const fetchTodosApi = async () => {
+  const response = await axios.get<Todo[]>(`${baseUrl}/api/todos`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  return response.data;
+}
