@@ -7,7 +7,7 @@ export const postTodoApi = async (
   deadLine: string | undefined
 ) => {
   const response = await axios.post<Todo>(
-    "http://localhost:8080/api/todos",
+    "/api/todos",
     {
       title,
       text,
@@ -31,7 +31,7 @@ export const putTodoApi = async (
   deadLine: string | undefined
 ) => {
   const response = await axios.put<Todo>(
-    "http://localhost:8080/api/todos",
+    "/api/todos",
     {
       id,
       title,
@@ -50,7 +50,7 @@ export const putTodoApi = async (
 };
 
 export const deleteTodoApi = async (id: number) => {
-  await axios.delete<Todo>(`http://localhost:8080/api/todos/${id}`, {
+  await axios.delete<Todo>(`/api/todos/${id}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",

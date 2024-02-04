@@ -15,7 +15,7 @@ const useTodos = () => {
     }
     const fetchTodos = async () => {
       const response = await axios.get<Todo[]>(
-        "http://localhost:8080/api/todos",
+        "/api/todos",
         {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,
