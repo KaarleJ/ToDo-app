@@ -60,17 +60,11 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [aws-ec2]
+    runs-on: ubuntu-latest
     steps:
-      - name: Pull Image from docker hub
-        run: |
-          docker pull kaarlej/todo-image:latest
-
-      - name: Delete old container
-        run:  docker rm -f todo-spring-container  
-
-      - name: Run docker container
-        run: |
-          docker run -d -p 8080:8080 --name todo-spring-container kaarlej/todo-image:latest
-
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
