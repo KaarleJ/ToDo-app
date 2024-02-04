@@ -53,7 +53,7 @@ public class ApplicationConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "https://todo-kaarlej.vercel.app")
+                        .allowedOrigins("http://localhost:3000", "https://springtodoapp.fly.dev")
                         .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
