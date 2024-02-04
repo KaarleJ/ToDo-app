@@ -1,4 +1,4 @@
-package com.todo.todoserver.User;
+package com.todo.todoserver.model;
 
 import java.util.Collection;
 import java.util.List;

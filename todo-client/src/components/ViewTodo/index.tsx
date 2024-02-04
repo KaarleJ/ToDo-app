@@ -3,6 +3,7 @@ import { useState } from "react";
 import ViewCard from "./ViewCard";
 import EditCard from "./EditCard";
 import DeleteCard from "./DeleteCard";
+import Loader from "../Loader";
 
 interface PreviewCardProps {
   todo: Todo;
@@ -15,6 +16,7 @@ interface PreviewCardProps {
   ) => Promise<void>;
   deleteTodo: (id: number) => void;
   onClose: () => void;
+  loading: boolean;
 }
 
 const PreviewCard = ({
@@ -22,8 +24,13 @@ const PreviewCard = ({
   putTodo,
   deleteTodo,
   onClose,
+  loading,
 }: PreviewCardProps) => {
   const [action, setAction] = useState<"edit" | "view" | "delete">("view");
+
+  if (loading) {
+    return <Loader size="64" className="mx-20 my-24"/>;
+  }
 
   switch (action) {
     case "view":

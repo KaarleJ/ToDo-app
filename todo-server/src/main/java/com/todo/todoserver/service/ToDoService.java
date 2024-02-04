@@ -1,10 +1,12 @@
-package com.todo.todoserver.ToDo;
+package com.todo.todoserver.service;
 
 import org.springframework.stereotype.Service;
 
-import com.todo.todoserver.User.User;
-import com.todo.todoserver.User.UserRepository;
-import com.todo.todoserver.config.JwtService;
+import com.todo.todoserver.model.ToDo;
+import com.todo.todoserver.model.ToDoRequest;
+import com.todo.todoserver.model.User;
+import com.todo.todoserver.repository.ToDoRepository;
+import com.todo.todoserver.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

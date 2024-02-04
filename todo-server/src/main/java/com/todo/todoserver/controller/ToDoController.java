@@ -1,4 +1,4 @@
-package com.todo.todoserver.ToDo;
+package com.todo.todoserver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.todo.todoserver.model.ToDo;
+import com.todo.todoserver.model.ToDoRequest;
+import com.todo.todoserver.service.ToDoService;
 
 import jakarta.servlet.http.HttpServletRequest;
 

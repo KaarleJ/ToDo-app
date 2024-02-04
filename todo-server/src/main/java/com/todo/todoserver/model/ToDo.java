@@ -1,4 +1,4 @@
-package com.todo.todoserver.ToDo;
+package com.todo.todoserver.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-
-import com.todo.todoserver.User.User;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

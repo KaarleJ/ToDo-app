@@ -1,4 +1,4 @@
-package com.todo.todoserver.auth;
+package com.todo.todoserver.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRequest {
-
-  private String username;
-  private String password;
+public class AuthResponse {
   
+  private String jwt;
+
+  private User user;
+
 }

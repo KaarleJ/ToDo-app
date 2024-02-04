@@ -1,3 +1,7 @@
+# WARNING!
+
+The frontend was built hastily. The code is spaghetti code and ugly. Please do not look at the code.
+
 # Todo-app client
 
 This directory contains the client-side code for the todo-app. The frontend is built with typescript, react and tailwindcss.

@@ -1,4 +1,4 @@
-package com.todo.todoserver.auth;
+package com.todo.todoserver.service;
 
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -6,10 +6,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.todo.todoserver.User.Role;
-import com.todo.todoserver.User.User;
-import com.todo.todoserver.User.UserRepository;
-import com.todo.todoserver.config.JwtService;
+import com.todo.todoserver.model.AuthRequest;
+import com.todo.todoserver.model.AuthResponse;
+import com.todo.todoserver.model.Role;
+import com.todo.todoserver.model.User;
+import com.todo.todoserver.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

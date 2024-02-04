@@ -4,6 +4,7 @@ import { User } from "../types";
 
 function useAuth() {
   const [user, setUser] = useState<User>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -14,25 +15,45 @@ function useAuth() {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const { jwt, user } = await loginApi(username, password);
-    localStorage.setItem("token", jwt);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ username: user.username, id: user.id })
-    );
-    setUser(user);
-    return user;
+    setLoading(true);
+    try {
+      const { jwt, user } = await loginApi(username, password);
+      localStorage.setItem("token", jwt);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ username: user.username, id: user.id })
+      );
+      setUser(user);
+      setLoading(false);
+      return user;
+    } catch (error) {
+      setLoading(false);
+      if (error instanceof Error) {
+        alert(error.message);
+        console.log(error.message);
+      }
+    }
   };
 
   const register = async (username: string, password: string) => {
-    const { jwt, user } = await registerApi(username, password);
-    localStorage.setItem("token", jwt);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ username: user.username, id: user.id })
-    );
-    setUser(user);
-    return user;
+    try {
+      setLoading(true);
+      const { jwt, user } = await registerApi(username, password);
+      localStorage.setItem("token", jwt);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ username: user.username, id: user.id })
+      );
+      setUser(user);
+      setLoading(false);
+      return user;
+    } catch (error) {
+      setLoading(false);
+      if (error instanceof Error) {
+        alert(error.message);
+        console.log(error.message);
+      }
+    }
   };
 
   const logOut = () => {
@@ -41,7 +62,7 @@ function useAuth() {
     setUser(undefined);
   };
 
-  return { user, login, register, logOut };
+  return { user, loading, login, register, logOut };
 }
 
 export default useAuth;

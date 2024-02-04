@@ -2,15 +2,17 @@ import Modal from "./Modal";
 import { useState } from "react";
 import UserForm from "./UserForm";
 import { User } from "../types";
+import Loader from "./Loader";
 
 interface AppBarProps {
-  user?: User
-  login: (username: string, password: string) => Promise<User>
-  register: (username: string, password: string) => Promise<User>
-  logOut: () => void
+  user?: User;
+  login: (username: string, password: string) => Promise<User | undefined>;
+  register: (username: string, password: string) => Promise<User | undefined>;
+  logOut: () => void;
+  loading: boolean;
 }
 
-const AppBar = ({ user, login, register, logOut}: AppBarProps) => {
+const AppBar = ({ user, loading, login, register, logOut }: AppBarProps) => {
   const [action, setAction] = useState<"login" | "register" | "none">("none");
 
   let formTitle: string;
@@ -62,7 +64,15 @@ const AppBar = ({ user, login, register, logOut}: AppBarProps) => {
             show={action === "login" || action === "register"}
             onClose={() => setAction("none")}
           >
-            <UserForm className="p-5" title={formTitle} onSubmit={handleAuth} />
+            {loading ? (
+              <Loader size="64" className="mx-20 my-24" />
+            ) : (
+              <UserForm
+                className="p-5"
+                title={formTitle}
+                onSubmit={handleAuth}
+              />
+            )}
           </Modal>
         </>
       ) : (

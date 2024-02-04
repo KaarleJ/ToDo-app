@@ -6,9 +6,10 @@ import useTodos from "../hooks/useTodos";
 import ViewTodo from "./ViewTodo";
 import { IoIosCreate as Create } from "react-icons/io";
 import TodoForm from "./TodoForm";
+import Loader from "./Loader";
 
 const TodoTable = () => {
-  const { todos, postTodo, putTodo, deleteTodo } = useTodos();
+  const { todos, loading, postTodo, putTodo, deleteTodo } = useTodos();
   const [targetTodo, setTargetTodo] = useState<Todo>();
   const [showPostModal, setShowPostModal] = useState(false);
 
@@ -33,6 +34,13 @@ const TodoTable = () => {
       >
         Create <Create className="w-6 h-6 mx-2 mb-1" />
       </button>
+
+      {!targetTodo && loading && !showPostModal && <Loader size="64" />}
+
+      {todos.length === 0 && (
+        <h1 className="text-3xl font-bold text-purple-700">No todos yet 😢</h1>
+      )}
+
       {todos.map((todo) => (
         <TodoCard
           todo={todo}
@@ -51,6 +59,7 @@ const TodoTable = () => {
             todo={targetTodo}
             putTodo={putTodo}
             deleteTodo={deleteTodo}
+            loading={loading}
           />
         )}
       </Modal>
@@ -60,12 +69,21 @@ const TodoTable = () => {
         show={showPostModal}
         className="!bg-purple-900"
       >
-        <TodoForm
-          className="p-10"
-          title="Create a new ToDo"
-          initialValues={{ title: "", text: "", deadLine: "", completed: false }}
-          onSubmit={handlePostTodo}
-        />
+        {loading ? (
+          <Loader size="128" className="mx-20 my-24" />
+        ) : (
+          <TodoForm
+            className="p-10"
+            title="Create a new ToDo"
+            initialValues={{
+              title: "",
+              text: "",
+              deadLine: "",
+              completed: false,
+            }}
+            onSubmit={handlePostTodo}
+          />
+        )}
       </Modal>
     </div>
   );
