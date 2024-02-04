@@ -27,6 +27,7 @@ jobs:
 
     - name: Copy React Build to Spring App static folder
       run: |
+        mkdir -p todo-server/src/main/resources/static
         cp -r todo-client/build/* todo-server/src/main/resources/static/
       
     - name: Set up JDK 21
