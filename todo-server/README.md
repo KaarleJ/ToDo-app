@@ -1,1 +1,1 @@
-This is an empty directory for now. The plan is to build the backend with Spring Boot.
+This directory contains the backend for the ToDo-App built with Spring Boot. 
