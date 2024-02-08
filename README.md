@@ -1,2 +1,2 @@
 # ToDo-app
-This app is a very simple Todo-app. The goal of this project is to get to learn Spring Boot a bit better and firstly create a simple CRUD api. I will also implement token based authroization and a postgres db in the backend. For the frontend I will be using Typescript, React and Tailwindcss.
+This app is a very simple Todo-app. The goal of this project was to get to learn Spring Boot a bit better and firstly create a simple CRUD api. In addition to CRUD operations, the backend also implements authentication with Spring Security. Because the goal was to learn Spring Boot, the frontend was developed hastily and is quite clumsy. Please don't take a look at the frontend code. 
