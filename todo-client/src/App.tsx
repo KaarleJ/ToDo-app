@@ -1,34 +1,23 @@
-import AppBar from "./components/AppBar";
-import Paper from "./components/Paper";
-import useAuth from "./hooks/useAuth";
-import TodoTable from "./components/TodoTable";
+import { useState } from "react";
 
 function App() {
-  const { user, loading, login, register, logOut } = useAuth();
+  const [count, setCount] = useState(0);
 
   return (
-    <div className="flex flex-col h-screen justify-between items-center">
-      <AppBar
-        user={user}
-        login={login}
-        loading={loading}
-        register={register}
-        logOut={logOut}
-      />
-      <Paper>
-        {user ? (
-          <TodoTable />
-        ) : (
-          <div className="flex flex-col justify-center h-5/6">
-            <p className="text-3xl text-purple-900">Not logged in</p>
-            <p className="text-xl text-purple-900">
-              Click the login or register button in the top right corner of the
-              screen to get started.
-            </p>
-          </div>
-        )}
-      </Paper>
-    </div>
+    <>
+      <h1>ToDo+App</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
   );
 }
 
