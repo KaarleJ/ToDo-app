@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-background text-foreground p-12 border-t-2 border-accent w-full">
       <div className="h-full flex flex-col items-center justify-center">
-        <h2 className="text-3xl">HopsApp2.0</h2>
+        <h2 className="text-3xl">ToDo-App</h2>
         <h3 className="text-xl">by KaarleJ</h3>
         <img
           src="https://avatars.githubusercontent.com/u/117437182?v=4"
