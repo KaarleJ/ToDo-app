@@ -16,10 +16,10 @@ export default function Navbar() {
   return (
     <div className="w-screen md:px-24 md:py-6 fixed top-0 left-0">
       <nav className="py-2 px-4 md:px-36 bg-primary shadow-xl md:rounded-full text-xl text-center text-foreground flex flex-row justify-between items-center md:mr-4 z-50">
-        <Link href="/" className="w-20">
+        <Link to="/" className="w-20">
           <img src={logo} alt="logo" className="w-10 h-10 object-cover" />
         </Link>
-        <Link href="/todos" className="w-20">
+        <Link to="/todos" className="w-20">
           Todos
         </Link>
         {isAuthenticated ? <AvatarMenu user={user} /> : <LoginButton />}

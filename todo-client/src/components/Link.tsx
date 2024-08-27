@@ -1,14 +1,10 @@
 import { cn } from "@/lib/utils";
-import React from "react";
-
-interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
-  className?: string;
-}
+import { Link as RouterLink, LinkProps } from "react-router-dom";
 
 export default function Link({ children, className, ...props }: LinkProps) {
   return (
-    <a {...props} className={cn("text-foreground hover:underline", className)}>
+    <RouterLink {...props} className={cn("text-foreground hover:underline", className)}>
       {children}
-    </a>
+    </RouterLink>
   );
 }

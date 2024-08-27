@@ -1,17 +1,19 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error from "./views/Error";
-import Landing from "./views/Landing";
 import Todos from "./views/Todos";
+import Root from "./views/Root";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landing />,
+    element: <Root />,
     errorElement: <Error />,
-  },
-  {
-    path: "/todos",
-    element: <Todos />,
+    children: [
+      {
+        path: "todos",
+        element: <Todos />,
+      },
+    ],
   },
 ]);
 

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
+import Link from "@/components/Link";
 
 export default function Landing() {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
@@ -9,7 +10,7 @@ export default function Landing() {
       <h3>ToDo-App on web</h3>
       <Button className="text-foreground my-6" asChild={isAuthenticated}>
         {isAuthenticated ? (
-          <a href="/todos">Get Started</a>
+          <Link to="/todos">Get Started</Link>
         ) : (
           <a onClick={() => loginWithRedirect()}>Get Started</a>
         )}
