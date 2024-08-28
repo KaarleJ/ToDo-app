@@ -9,8 +9,19 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import useTodos from "@/hooks/useTodos";
 
 export default function Todos() {
+  const { data, error, isLoading } = useTodos();
+
+  if (error) {
+    console.error(error);
+    return <div>Error loading todos</div>;
+  }
+
+  if (isLoading) {
+    return <div>Loading todos...</div>;
+  }
   return (
     <div className="border rounded-md w-full h-[30rem] mb-24 ">
       <TopMenu />
