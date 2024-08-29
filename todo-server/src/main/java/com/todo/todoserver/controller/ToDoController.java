@@ -2,6 +2,8 @@ package com.todo.todoserver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +19,6 @@ import com.todo.todoserver.service.ToDoService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping(path = "api/todos")
 public class ToDoController {
@@ -32,8 +31,12 @@ public class ToDoController {
     }
 
     @GetMapping
-    public Optional<List<ToDo>> getTodos(HttpServletRequest req) {
-        return toDoService.getTodos(req);
+    public ResponseEntity<?> getTodos(Authentication auth) {
+        try {
+            return ResponseEntity.ok(toDoService.getTodos(auth));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching todo: " + e.getMessage());
+        }
     }
 
     @PutMapping
