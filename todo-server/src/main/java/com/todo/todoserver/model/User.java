@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "app_user")
+@Table(name = "app_user", uniqueConstraints = {
+        @UniqueConstraint(name = "auth_id_unique", columnNames = "authId")
+})
 public class User {
   @Id
     @SequenceGenerator(
@@ -23,7 +25,7 @@ public class User {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-  private Long id;
+  private Long id; 
   private String authId;
   private String username;
   private String email;
