@@ -14,6 +14,8 @@ import useTodos from "@/hooks/useTodos";
 export default function Todos() {
   const { data, error, isLoading } = useTodos();
 
+  console.log(data);
+
   if (error) {
     console.error(error);
     return <div>Error loading todos</div>;
