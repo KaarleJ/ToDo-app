@@ -15,7 +15,8 @@ jobs:
       PSQL_URL: ${{ secrets.PSQL_URL}}
       PSQL_UN: ${{ secrets.PSQL_UN }}
       PSQL_PW: ${{ secrets.PSQL_PW }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      OKTA_ISSUER: ${{ secrets.OKTA_ISSUER }}
+      OKTA_AUDIENCE: ${{ secrets.OKTA_AUDIENCE }}
 
     steps:
     - uses: actions/checkout@v3
