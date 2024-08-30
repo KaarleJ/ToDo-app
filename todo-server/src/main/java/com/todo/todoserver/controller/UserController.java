@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.todo.todoserver.model.UserRequest;
+import com.todo.todoserver.model.request.UserRequest;
 import com.todo.todoserver.service.UserService;
 
 @RestController
@@ -41,4 +41,5 @@ public class UserController {
       return ResponseEntity.badRequest().body("Error adding new user: " + e.getMessage());
     }
   }
+
 }

@@ -5,7 +5,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.todo.todoserver.model.User;
-import com.todo.todoserver.model.UserRequest;
+import com.todo.todoserver.model.request.UserRequest;
 import com.todo.todoserver.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
