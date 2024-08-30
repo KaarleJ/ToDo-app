@@ -1,4 +1,4 @@
-package com.todo.todoserver.model;
+package com.todo.todoserver.model.request;
 
 import java.time.LocalDate;
 
