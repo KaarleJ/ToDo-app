@@ -9,20 +9,27 @@ import {
 } from "./ui/dropdown-menu";
 import type { User } from "@auth0/auth0-react";
 import Link from "./Link";
+import { ModeToggle } from "./mode-toggle";
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth0();
 
   return (
-    <div className="w-screen md:px-24 md:py-6 fixed top-0 left-0">
-      <nav className="py-2 px-4 md:px-36 bg-primary shadow-xl md:rounded-full text-xl text-center text-foreground flex flex-row justify-between items-center md:mr-4 z-50">
-        <Link to="/" className="w-20">
-          <img src={logo} alt="logo" className="w-10 h-10 object-cover" />
-        </Link>
-        <Link to="/todos" className="w-20">
+    <div className="w-screen md:px-24 md:py-6 fixed top-0 left-0 z-50">
+      <nav className="py-2 px-4 md:px-36 bg-primary shadow-xl md:rounded-full text-xl text-center flex flex-row justify-between items-center md:mr-4">
+        <div className="w-24">
+          <Link to="/" className="">
+            <img src={logo} alt="logo" className="w-10 h-10" />
+          </Link>
+        </div>
+
+        <Link to="/todos" className="w-24 text-primary-foreground">
           Todos
         </Link>
-        {isAuthenticated ? <AvatarMenu user={user} /> : <LoginButton />}
+        <div className="flex items-center justify-between w-24">
+          <ModeToggle />
+          {isAuthenticated ? <AvatarMenu user={user} /> : <LoginButton />}
+        </div>
       </nav>
     </div>
   );
@@ -34,7 +41,7 @@ function LoginButton() {
   return (
     <Button
       onClick={() => loginWithRedirect()}
-      className="text-xl text-foreground hover:underline w-20"
+      className="text-xl text-foreground hover:underline"
     >
       Log In
     </Button>
@@ -50,7 +57,7 @@ function LogoutButton() {
       onClick={() =>
         logout({ logoutParams: { returnTo: window.location.origin } })
       }
-      className=""
+      className="px-1 py-1"
     >
       Log Out
     </Button>
@@ -60,8 +67,11 @@ function LogoutButton() {
 function AvatarMenu({ user }: { user: User | undefined }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="w-20">
-        <img src={user?.picture} className="object-fill w-10 h-10 rounded-full"></img>
+      <DropdownMenuTrigger>
+        <img
+          src={user?.picture}
+          className="object-fill w-10 h-10 rounded-full"
+        ></img>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
