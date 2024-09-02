@@ -14,5 +14,6 @@ import lombok.NoArgsConstructor;
 public class ToDoRequest {
   private String title;
   private String text;
-  private LocalDate deadLine;
+  private LocalDate deadline;
+  private Boolean status;
 }

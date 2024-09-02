@@ -42,8 +42,8 @@ public class ToDoService {
 
             newTodo.setTitle(oldTodo.getTitle());
             newTodo.setText(oldTodo.getText());
-            newTodo.setCompleted(oldTodo.getCompleted());
-            newTodo.setDeadLine(oldTodo.getDeadLine());
+            newTodo.setStatus(oldTodo.getStatus());
+            newTodo.setDeadline(oldTodo.getDeadline());
 
             toDoRepository.save(newTodo);
 
@@ -59,9 +59,10 @@ public class ToDoService {
         var todo = ToDo.builder()
                 .title(treq.getTitle())
                 .text(treq.getText())
-                .completed(false)
+                .status(false)
                 .author(author)
-                .deadLine(treq.getDeadLine())
+                .deadline(treq.getDeadline())
+                .status(treq.getStatus())
                 .build();
         return toDoRepository.save(todo);
     }
