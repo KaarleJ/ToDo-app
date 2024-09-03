@@ -26,6 +26,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema } from "@/lib/schemas";
 import TodoForm from "@/components/TodoForm";
 import { Form, FormMessage } from "@/components/ui/form";
+import useTodoUpload from "@/hooks/useTodo";
+import { format } from "date-fns";
 
 export default function Todos() {
   const { data, error, isLoading } = useTodos();
@@ -35,8 +37,10 @@ export default function Todos() {
   }
 
   if (isLoading) {
-    return console.log("Loading...");
+    console.log("Loading...");
   }
+
+  console.log(data);
 
   return (
     <div className="border rounded-md w-full h-[30rem] mb-24 relative">
@@ -57,8 +61,8 @@ export default function Todos() {
             data.map((task) => (
               <TableRow key={task.id}>
                 <TableCell>{task.title}</TableCell>
-                <TableCell>{task.deadline.toISOString()}</TableCell>
-                <TableCell className="text-right">{task.status}</TableCell>
+                <TableCell>{format(task.deadline,"d.M.yyyy")}</TableCell>
+                <TableCell className="text-right">{task.status ? "Finished" : "Unfinished"}</TableCell>
               </TableRow>
             ))}
 
@@ -98,6 +102,7 @@ function ToolBar() {
 }
 
 function AddCourseModal() {
+  const { isLoading, createTodo } = useTodoUpload();
   const form = useForm<z.infer<typeof todoFormSchema>>({
     resolver: zodResolver(todoFormSchema),
     defaultValues: {
@@ -108,8 +113,8 @@ function AddCourseModal() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof todoFormSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof todoFormSchema>) {
+    await createTodo(data);
   }
 
   return (
@@ -129,7 +134,9 @@ function AddCourseModal() {
             <TodoForm form={form} />
             <div className="flex flex-row justify-between">
               <div className="flex items-center">
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={isLoading}>
+                  Submit
+                </Button>
               </div>
               <ModalClose>Cancel</ModalClose>
             </div>

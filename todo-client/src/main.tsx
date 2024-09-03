@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { ThemeProvider } from "./components/theme-provider.tsx";
+import { Toaster } from "@/components/ui/toaster";
 
 const domain = import.meta.env.VITE_AUTH_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH_ID;
@@ -26,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
     >
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <App />
+        <Toaster />
       </ThemeProvider>
     </Auth0Provider>
   </StrictMode>

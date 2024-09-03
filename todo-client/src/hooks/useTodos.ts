@@ -1,8 +1,19 @@
+import { Todo } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
+import { parseISO } from "date-fns";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 const audience = import.meta.env.VITE_AUTH_AUDIENCE;
+const apiUrl = import.meta.env.VITE_API_URL;
+
+type StringTodo = {
+  id: string;
+  title: string;
+  text: string;
+  status: boolean;
+  deadline: string;
+};
 
 export default function useTodos() {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -25,17 +36,25 @@ export default function useTodos() {
     getUserMetadata();
   }, [getAccessTokenSilently, user?.sub]);
 
-  const todosFetcher = (url: string) =>
-    fetch(url, {
+  const todosFetcher = async (url: string): Promise<Todo[]> => {
+    const res = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => res.json());
+    });
+    const todos: StringTodo[] = await res.json();
+    return todos.map((todo) => ({
+      ...todo,
+      deadline: parseISO(todo.deadline),
+    }));
+  }
 
   const { data, error, isLoading } = useSWR(
-    "http://localhost:8080/api/todos",
+    token ? `${apiUrl}/api/todos` : null,
     todosFetcher
   );
+
+
 
   return { data, error, isLoading };
 }
