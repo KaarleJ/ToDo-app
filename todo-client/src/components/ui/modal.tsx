@@ -1,120 +1,148 @@
 import * as React from "react";
-import * as ModalPrimitive from "@radix-ui/react-Dialog";
-import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
-const Modal = ModalPrimitive.Root;
+interface BaseProps {
+  children: React.ReactNode;
+}
 
-const ModalTrigger = ModalPrimitive.Trigger;
+interface RootModalProps extends BaseProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 
-const ModalPortal = ModalPrimitive.Portal;
+interface ModalProps extends BaseProps {
+  className?: string;
+  asChild?: true;
+}
 
-const ModalClose = ModalPrimitive.Close;
+const desktop = "(min-width: 768px)";
 
-const ModalOverlay = React.forwardRef<
-  React.ElementRef<typeof ModalPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof ModalPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <ModalPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className
-    )}
-    {...props}
-  />
-));
-ModalOverlay.displayName = ModalPrimitive.Overlay.displayName;
+const Modal = ({ children, ...props }: RootModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const Modal = isDesktop ? Dialog : Drawer;
 
-const ModalContent = React.forwardRef<
-  React.ElementRef<typeof ModalPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof ModalPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <ModalPortal>
-    <ModalOverlay />
-    <ModalPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
-        className
-      )}
-      {...props}
-    >
+  return <Modal {...props}>{children}</Modal>;
+};
+
+const ModalTrigger = ({ className, children, ...props }: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalTrigger = isDesktop ? DialogTrigger : DrawerTrigger;
+
+  return (
+    <ModalTrigger className={className} {...props}>
       {children}
-      <ModalPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
-      </ModalPrimitive.Close>
-    </ModalPrimitive.Content>
-  </ModalPortal>
-));
-ModalContent.displayName = ModalPrimitive.Content.displayName;
+    </ModalTrigger>
+  );
+};
 
-const ModalHeader = ({
+const ModalClose = ({ className, children, ...props }: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalClose = isDesktop ? DialogClose : DrawerClose;
+
+  return (
+    <ModalClose className={className} {...props}>
+      {children}
+    </ModalClose>
+  );
+};
+
+const ModalContent = ({ className, children, ...props }: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalContent = isDesktop ? DialogContent : DrawerContent;
+
+  return (
+    <ModalContent className={className} {...props}>
+      {children}
+    </ModalContent>
+  );
+};
+
+const ModalDescription = ({
   className,
+  children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
-      className
-    )}
-    {...props}
-  />
-);
-ModalHeader.displayName = "ModalHeader";
+}: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalDescription = isDesktop ? DialogDescription : DrawerDescription;
 
-const ModalFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
-    {...props}
-  />
-);
-ModalFooter.displayName = "ModalFooter";
+  return (
+    <ModalDescription className={className} {...props}>
+      {children}
+    </ModalDescription>
+  );
+};
 
-const ModalTitle = React.forwardRef<
-  React.ElementRef<typeof ModalPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof ModalPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <ModalPrimitive.Title
-    ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className
-    )}
-    {...props}
-  />
-));
-ModalTitle.displayName = ModalPrimitive.Title.displayName;
+const ModalHeader = ({ className, children, ...props }: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalHeader = isDesktop ? DialogHeader : DrawerHeader;
 
-const ModalDescription = React.forwardRef<
-  React.ElementRef<typeof ModalPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof ModalPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <ModalPrimitive.Description
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-  />
-));
-ModalDescription.displayName = ModalPrimitive.Description.displayName;
+  return (
+    <ModalHeader className={className} {...props}>
+      {children}
+    </ModalHeader>
+  );
+};
+
+const ModalTitle = ({ className, children, ...props }: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalTitle = isDesktop ? DialogTitle : DrawerTitle;
+
+  return (
+    <ModalTitle className={className} {...props}>
+      {children}
+    </ModalTitle>
+  );
+};
+
+const ModalBody = ({ className, children, ...props }: ModalProps) => {
+  return (
+    <div className={cn("px-4 md:px-0", className)} {...props}>
+      {children}
+    </div>
+  );
+};
+
+const ModalFooter = ({ className, children, ...props }: ModalProps) => {
+  const isDesktop = useMediaQuery(desktop);
+  const ModalFooter = isDesktop ? DialogFooter : DrawerFooter;
+
+  return (
+    <ModalFooter className={className} {...props}>
+      {children}
+    </ModalFooter>
+  );
+};
 
 export {
   Modal,
-  ModalPortal,
-  ModalOverlay,
-  ModalClose,
   ModalTrigger,
+  ModalClose,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalTitle,
   ModalDescription,
+  ModalHeader,
+  ModalTitle,
+  ModalBody,
+  ModalFooter,
 };
