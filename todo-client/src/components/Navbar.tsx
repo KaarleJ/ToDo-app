@@ -15,7 +15,7 @@ export default function Navbar() {
   const { user, isAuthenticated } = useAuth0();
 
   return (
-    <div className="w-screen md:px-24 md:py-6 fixed top-0 left-0 z-50">
+    <div className="w-screen md:px-24 md:py-6 fixed top-0 left-0 z-10">
       <nav className="py-2 px-4 md:px-36 bg-primary shadow-xl md:rounded-full text-xl text-center flex flex-row justify-between items-center md:mr-4">
         <div className="w-24">
           <Link to="/" className="">
