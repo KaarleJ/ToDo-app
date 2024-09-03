@@ -7,28 +7,44 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Modal,
+  ModalClose,
+  ModalContent,
+  ModalDescription,
+  ModalHeader,
+  ModalTitle,
+  ModalTrigger,
+} from "@/components/ui/modal";
+import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PlusIcon as Plus } from "lucide-react";
 import useTodos from "@/hooks/useTodos";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { todoFormSchema } from "@/lib/schemas";
+import TodoForm from "@/components/TodoForm";
+import { Form, FormMessage } from "@/components/ui/form";
 
 export default function Todos() {
   const { data, error, isLoading } = useTodos();
 
-  console.log(data);
-
   if (error) {
     console.error(error);
-    return <div>Error loading todos</div>;
   }
 
   if (isLoading) {
-    return <div>Loading todos...</div>;
+    return console.log("Loading...");
   }
+
   return (
-    <div className="border rounded-md w-full h-[30rem] mb-24 ">
+    <div className="border rounded-md w-full h-[30rem] mb-24 relative">
       <TopMenu />
       <Table>
-        <TableCaption>A list of your tasks</TableCaption>
+        <TableCaption>
+          {error ? "Error fetching tasks" : "A list of your tasks"}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Task</TableHead>
@@ -37,20 +53,30 @@ export default function Todos() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell>Take the trash out</TableCell>
-            <TableCell>25.4.2024</TableCell>
-            <TableCell className="text-right">done</TableCell>
-          </TableRow>
+          {data &&
+            data.map((task) => (
+              <TableRow key={task.id}>
+                <TableCell>{task.title}</TableCell>
+                <TableCell>{task.deadline.toISOString()}</TableCell>
+                <TableCell className="text-right">{task.status}</TableCell>
+              </TableRow>
+            ))}
+
+          {isLoading && (
+            <TableRow>
+              <TableCell colSpan={3}>Loading...</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
+      <ToolBar />
     </div>
   );
 }
 
 function TopMenu() {
   return (
-    <div className="w-full border-b h-min px-4 py-2 flex items-center justify-between rounded-t-md shadow-lg">
+    <div className="w-full border-b h-min px-4 py-2 flex items-center justify-between rounded-t-md">
       <div>
         <h3>Todos</h3>
         <p className="brightness-75 text-sm">Manage your tasks</p>
@@ -60,5 +86,57 @@ function TopMenu() {
         <Button type="submit">Search</Button>
       </div>
     </div>
+  );
+}
+
+function ToolBar() {
+  return (
+    <div className="absolute bottom-4 right-4 flex flex-col items-center justify-between">
+      <AddCourseModal />
+    </div>
+  );
+}
+
+function AddCourseModal() {
+  const form = useForm<z.infer<typeof todoFormSchema>>({
+    resolver: zodResolver(todoFormSchema),
+    defaultValues: {
+      title: "",
+      text: "",
+      status: false,
+      deadline: undefined,
+    },
+  });
+
+  function onSubmit(data: z.infer<typeof todoFormSchema>) {
+    console.log(data);
+  }
+
+  return (
+    <Modal>
+      <ModalTrigger asChild>
+        <Button className="rounded-full w-10 h-10 px-0 py-0">
+          <Plus size={26} />
+        </Button>
+      </ModalTrigger>
+      <ModalContent className="flex flex-col p-4">
+        <ModalHeader>
+          <ModalTitle>Add Todo</ModalTitle>
+          <ModalDescription>Add a new Todo to your list</ModalDescription>
+        </ModalHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <TodoForm form={form} />
+            <div className="flex flex-row justify-between">
+              <div className="flex items-center">
+                <Button type="submit">Submit</Button>
+              </div>
+              <ModalClose>Cancel</ModalClose>
+            </div>
+            <FormMessage>{form.formState.errors.root?.message}</FormMessage>
+          </form>
+        </Form>
+      </ModalContent>
+    </Modal>
   );
 }

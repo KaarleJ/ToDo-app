@@ -6,6 +6,6 @@ export const todoFormSchema = z.object({
     .min(3, "Title must be at least 3 characters")
     .max(255, "Title must be at most 255 characters"),
   text: z.string(),
-  deadline: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Deadline must be a date"),
-  status: z.string().regex(/^(true|false)$/, "Status must be true or false"),
+  deadline: z.date({ message: "Invalid date" }),
+  status: z.boolean({ message: "Invalid status" }),
 });
