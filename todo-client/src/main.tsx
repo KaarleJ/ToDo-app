@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { ThemeProvider } from "./components/theme-provider.tsx";
 import { Toaster } from "@/components/ui/toaster";
+import { SWRConfig } from "swr";
 
 const domain = import.meta.env.VITE_AUTH_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH_ID;
@@ -25,10 +26,12 @@ createRoot(document.getElementById("root")!).render(
         scope: "access:todos profile email",
       }}
     >
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <App />
-        <Toaster />
-      </ThemeProvider>
+      <SWRConfig>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <App />
+          <Toaster />
+        </ThemeProvider>
+      </SWRConfig>
     </Auth0Provider>
   </StrictMode>
 );
