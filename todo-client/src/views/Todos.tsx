@@ -16,6 +16,7 @@ import {
   ModalTitle,
   ModalTrigger,
 } from "@/components/ui/modal";
+import TodoModal from "@/components/TodoModal";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -26,8 +27,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema } from "@/lib/schemas";
 import TodoForm from "@/components/TodoForm";
 import { Form, FormMessage } from "@/components/ui/form";
-import useTodoUpload from "@/hooks/useTodo";
+import useTodoAction from "@/hooks/useTodoAction";
 import { format } from "date-fns";
+import Loader from "@/components/Loader";
+import { useState } from "react";
 
 export default function Todos() {
   const { data, error, isLoading } = useTodos();
@@ -36,43 +39,40 @@ export default function Todos() {
     console.error(error);
   }
 
-  if (isLoading) {
-    console.log("Loading...");
-  }
-
-  console.log(data);
-
   return (
-    <div className="border rounded-md w-full h-[30rem] mb-24 relative">
+    <div className="border rounded-md w-full h-[30rem] mb-24 relative flex flex-col">
       <TopMenu />
-      <Table>
-        <TableCaption>
-          {error ? "Error fetching tasks" : "A list of your tasks"}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Task</TableHead>
-            <TableHead>Deadline</TableHead>
-            <TableHead className="text-right">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data &&
-            data.map((task) => (
-              <TableRow key={task.id}>
-                <TableCell>{task.title}</TableCell>
-                <TableCell>{format(task.deadline,"d.M.yyyy")}</TableCell>
-                <TableCell className="text-right">{task.status ? "Finished" : "Unfinished"}</TableCell>
-              </TableRow>
-            ))}
 
-          {isLoading && (
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Table>
+          <TableCaption>
+            {error ? "Error fetching tasks" : "A list of your tasks"}
+          </TableCaption>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={3}>Loading...</TableCell>
+              <TableHead>Task</TableHead>
+              <TableHead>Deadline</TableHead>
+              <TableHead className="text-right">Status</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data &&
+              data.map((task) => (
+                <TodoModal todo={task} key={task.id}>
+                  <TableRow>
+                    <TableCell>{task.title}</TableCell>
+                    <TableCell>{format(task.deadline, "d.M.yyyy")}</TableCell>
+                    <TableCell className="text-right">
+                      {task.status ? "Finished" : "Unfinished"}
+                    </TableCell>
+                  </TableRow>
+                </TodoModal>
+              ))}
+          </TableBody>
+        </Table>
+      )}
       <ToolBar />
     </div>
   );
@@ -96,13 +96,15 @@ function TopMenu() {
 function ToolBar() {
   return (
     <div className="absolute bottom-4 right-4 flex flex-col items-center justify-between">
-      <AddCourseModal />
+      <AddTodoModal />
     </div>
   );
 }
 
-function AddCourseModal() {
-  const { isLoading, createTodo } = useTodoUpload();
+function AddTodoModal() {
+  const { isLoading, createTodo } = useTodoAction();
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof todoFormSchema>>({
     resolver: zodResolver(todoFormSchema),
     defaultValues: {
@@ -114,11 +116,17 @@ function AddCourseModal() {
   });
 
   async function onSubmit(data: z.infer<typeof todoFormSchema>) {
-    await createTodo(data);
+    try {
+      await createTodo(data);
+      setOpen(false);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   return (
-    <Modal>
+    <Modal open={open} onOpenChange={setOpen}>
       <ModalTrigger asChild>
         <Button className="rounded-full w-10 h-10 px-0 py-0">
           <Plus size={26} />
