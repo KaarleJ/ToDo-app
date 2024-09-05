@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Todo App Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React-based frontend for a Todo application, built with TypeScript and Vite. It includes various components and hooks to manage todos, along with a form for adding and editing tasks.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## Expanding the ESLint configuration
+To get started with the project, follow these steps:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Clone the repository:**
 
-- Configure the top-level `parserOptions` property like this:
+   ```sh
+   git clone https://github.com/your-username/todo-app-frontend.git
+   cd todo-app-frontend```
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+2. **Install dependencies:**
+    ```sh
+    npm install
+    ```
+
+3. **Start the development server:**
+    ```sh
+    npm run dev
+    ```
+    This will start the Vite development server and you can view the app at http://localhost:5173.
+
+## Project Structure
+The frontend has the following general structure:
+
+```
+index.html 
+public/ 
+src/
+  App.tsx
+  main.tsx
+  views/
+  components/
+    ui/
+  hooks/
+  lib/
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Key Files and Directories
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- index.html: Base html of the app
+- public/: Contains static assets.
+- src/: Contains the main source code for the application.
+  - App.tsx: Contains the App router with views.
+  - main.tsx: Entry point for the React application with providers.
+  - views/: Contains wievs for the app.
+  - components/: Contains reusable UI components.
+  - hooks/: Contains custom hooks.
+  - lib/: Contains utility functions and schemas.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+
+## Dependencies
+
+The project uses the following dependencies:
+
+- React: A JavaScript library for building user interfaces.
+- TypeScript: A typed superset of JavaScript that compiles to plain JavaScript.
+- Vite: A fast build tool for modern web projects.
+- React Hook Form: A library for managing form state in React.
+- Radix UI: A set of accessible and customizable UI components.
+- Tailwind CSS: A utility-first CSS framework for rapid UI development.
+
+For a complete list of dependencies, refer to the package.json file.
