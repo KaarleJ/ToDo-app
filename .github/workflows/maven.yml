@@ -13,7 +13,7 @@ jobs:
 
     env:
       VITE_AUTH_DOMAIN: ${{ secrets.AUTH_DOMAIN }}
-      VITE_AUTH_ID: = ${{ secrets.AUTH_ID }}
+      VITE_AUTH_ID: ${{ secrets.AUTH_ID }}
       VITE_AUTH_AUDIENCE: ${{ secrets.OKTA_AUDIENCE }}
       VITE_API_URL: ${{ secrets.API_URL }}
       PSQL_URL: ${{ secrets.PSQL_URL }}
