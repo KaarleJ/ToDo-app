@@ -75,7 +75,7 @@ export default function TodoModal({
         </ModalHeader>
         <ModalBody>
           {!edit ? (
-            <div className="h-[10rem]">
+            <div className="h-[10rem] flex flex-col items-start justify-between">
               <p className="my-2">{todo.text}</p>
               <p className="my-4 text-muted-foreground">
                 Deadline: {format(todo.deadline, "d.M.yyyy")}

@@ -41,7 +41,7 @@ function LoginButton() {
   return (
     <Button
       onClick={() => loginWithRedirect()}
-      className="text-xl text-foreground hover:underline"
+      className="text-xl hover:underline w-10"
     >
       Log In
     </Button>

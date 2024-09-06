@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Textarea } from "./ui/textarea";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -62,7 +63,7 @@ export default function TodoForm({ form }: TodoFormProps) {
           <FormItem>
             <FormLabel>Todo content</FormLabel>
             <FormControl>
-              <Input placeholder="Todo content..." {...field} />
+              <Textarea placeholder="Todo content..." {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -79,7 +80,7 @@ export default function TodoForm({ form }: TodoFormProps) {
                 onValueChange={(value) => {
                   field.onChange(value === "true");
                 }}
-                defaultValue="false"
+                defaultValue={field.value ? "true" : "false"}
               >
                 <FormControl>
                   <SelectTrigger>
