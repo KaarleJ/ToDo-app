@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSWRConfig } from "swr"
+import { format } from "date-fns";
 
 const audience = import.meta.env.VITE_AUTH_AUDIENCE;
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -33,6 +34,10 @@ export default function useTodoAction() {
 
   const createTodo = async (todo: Omit<Todo, "id">) => {
     setIsLoading(true);
+    const formattedTodo = {
+      ...todo,
+      deadline: format(new Date(todo.deadline), "yyyy-MM-dd"),
+    };
     try {
       const response = await fetch(`${apiUrl}/api/todos`, {
         method: "POST",
@@ -40,7 +45,7 @@ export default function useTodoAction() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(todo),
+        body: JSON.stringify(formattedTodo),
       });
       if (response.ok) {
         const newTodo = await response.json();
