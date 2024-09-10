@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { useRevalidator } from "react-router-dom";
+import axios from "axios";
 
 const audience = import.meta.env.VITE_AUTH_AUDIENCE;
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -39,34 +40,24 @@ export default function useTodoAction() {
       deadline: format(new Date(todo.deadline), "yyyy-MM-dd"),
     };
     try {
-      const response = await fetch(`${apiUrl}/api/todos`, {
-        method: "POST",
+      const response = await axios.post(`${apiUrl}/api/todos`, formattedTodo, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formattedTodo),
       });
-      if (response.ok) {
-        const newTodo = await response.json();
-        toast({
-          title: "Success!",
-          description: "Todo created successfully",
-        });
-        revalidator.revalidate();
-        return newTodo;
-      } else {
-        throw new Error("Failed to create todo");
-      }
+      toast({
+        title: "Success!",
+        description: "Todo created successfully",
+      });
+      revalidator.revalidate();
+      return response.data;
     } catch (e) {
       console.error(e);
-      if (e instanceof Error) {
-        toast({
-          title: "Error!",
-          description: e.message,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Error!",
+        description: e instanceof Error ? e.message : "Failed to create todo",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -79,34 +70,24 @@ export default function useTodoAction() {
       deadline: format(new Date(todo.deadline), "yyyy-MM-dd"),
     };
     try {
-      const response = await fetch(`${apiUrl}/api/todos`, {
-        method: "PUT",
+      const response = await axios.put(`${apiUrl}/api/todos`, formattedTodo, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formattedTodo),
       });
-      if (response.ok) {
-        const updatedTodo = await response.json();
-        toast({
-          title: "Success!",
-          description: "Todo updated successfully",
-        });
-        revalidator.revalidate();
-        return updatedTodo;
-      } else {
-        throw new Error("Failed to update todo");
-      }
+      toast({
+        title: "Success!",
+        description: "Todo updated successfully",
+      });
+      revalidator.revalidate();
+      return response.data;
     } catch (e) {
       console.error(e);
-      if (e instanceof Error) {
-        toast({
-          title: "Error!",
-          description: e.message,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Error!",
+        description: e instanceof Error ? e.message : "Failed to update todo",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -115,30 +96,28 @@ export default function useTodoAction() {
   const deleteTodo = async (id: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${apiUrl}/api/todos/${id}`, {
-        method: "DELETE",
+      const response = await axios.delete(`${apiUrl}/api/todos/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Success!",
           description: "Todo deleted successfully",
         });
+
         revalidator.revalidate();
       } else {
         throw new Error("Failed to delete todo");
       }
     } catch (e) {
       console.error(e);
-      if (e instanceof Error) {
-        toast({
-          title: "Error!",
-          description: e.message,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Error!",
+        description: e instanceof Error ? e.message : "Failed to delete todo",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
