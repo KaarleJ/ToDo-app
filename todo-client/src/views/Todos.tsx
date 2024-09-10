@@ -21,7 +21,6 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusIcon as Plus } from "lucide-react";
-import useTodos from "@/hooks/useTodos";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema } from "@/lib/schemas";
@@ -29,50 +28,46 @@ import TodoForm from "@/components/TodoForm";
 import { Form, FormMessage } from "@/components/ui/form";
 import useTodoAction from "@/hooks/useTodoAction";
 import { format } from "date-fns";
-import Loader from "@/components/Loader";
 import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import { Todo } from "@/types";
 
 export default function Todos() {
-  const { data, error, isLoading } = useTodos();
-
-  if (error) {
-    console.error(error);
-  }
-
+  const todos = useLoaderData() as Todo[];
   return (
     <div className="border rounded-md w-full h-[30rem] mb-24 relative flex flex-col">
       <TopMenu />
 
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Table>
-          <TableCaption>
-            {error ? "Error fetching tasks" : "A list of your tasks"}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Task</TableHead>
-              <TableHead>Deadline</TableHead>
-              <TableHead className="text-right">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data &&
-              data.map((task) => (
-                <TodoModal todo={task} key={task.id}>
-                  <TableRow>
-                    <TableCell>{task.title}</TableCell>
-                    <TableCell>{format(task.deadline, "d.M.yyyy")}</TableCell>
-                    <TableCell className="text-right">
-                      {task.status ? "Finished" : "Unfinished"}
-                    </TableCell>
-                  </TableRow>
-                </TodoModal>
-              ))}
-          </TableBody>
-        </Table>
-      )}
+      <Table>
+        <TableCaption>A list of your tasks</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Task</TableHead>
+            <TableHead>Content</TableHead>
+            <TableHead>Deadline</TableHead>
+            <TableHead className="text-right">Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {todos &&
+            todos.map((todo) => (
+              <TodoModal todo={todo} key={todo.id}>
+                <TableRow>
+                  <TableCell className="text-nowrap w-max">
+                    {todo.title}
+                  </TableCell>
+                  <TableCell className=" text-nowrap">{todo.text}</TableCell>
+                  <TableCell className="w-32">
+                    {format(todo.deadline, "d.M.yyyy")}
+                  </TableCell>
+                  <TableCell className="text-right w-32">
+                    {todo.status ? "Finished" : "Unfinished"}
+                  </TableCell>
+                </TableRow>
+              </TodoModal>
+            ))}
+        </TableBody>
+      </Table>
       <ToolBar />
     </div>
   );
@@ -119,8 +114,7 @@ function AddTodoModal() {
     try {
       await createTodo(data);
       setOpen(false);
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }

@@ -2,18 +2,18 @@ import { Todo } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useSWRConfig } from "swr"
 import { format } from "date-fns";
+import { useRevalidator } from "react-router-dom";
 
 const audience = import.meta.env.VITE_AUTH_AUDIENCE;
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function useTodoAction() {
+  const revalidator = useRevalidator();
   const { getAccessTokenSilently, user } = useAuth0();
   const [token, setToken] = useState<string | null>(null);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const { mutate } = useSWRConfig()
 
   useEffect(() => {
     const getUserMetadata = async () => {
@@ -53,7 +53,7 @@ export default function useTodoAction() {
           title: "Success!",
           description: "Todo created successfully",
         });
-        mutate(`${apiUrl}/api/todos`)
+        revalidator.revalidate();
         return newTodo;
       } else {
         throw new Error("Failed to create todo");
@@ -74,6 +74,10 @@ export default function useTodoAction() {
 
   const updateTodo = async (todo: Todo) => {
     setIsLoading(true);
+    const formattedTodo = {
+      ...todo,
+      deadline: format(new Date(todo.deadline), "yyyy-MM-dd"),
+    };
     try {
       const response = await fetch(`${apiUrl}/api/todos`, {
         method: "PUT",
@@ -81,7 +85,7 @@ export default function useTodoAction() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(todo),
+        body: JSON.stringify(formattedTodo),
       });
       if (response.ok) {
         const updatedTodo = await response.json();
@@ -89,7 +93,7 @@ export default function useTodoAction() {
           title: "Success!",
           description: "Todo updated successfully",
         });
-        mutate(`${apiUrl}/api/todos`);
+        revalidator.revalidate();
         return updatedTodo;
       } else {
         throw new Error("Failed to update todo");
@@ -122,7 +126,7 @@ export default function useTodoAction() {
           title: "Success!",
           description: "Todo deleted successfully",
         });
-        mutate(`${apiUrl}/api/todos`);
+        revalidator.revalidate();
       } else {
         throw new Error("Failed to delete todo");
       }
