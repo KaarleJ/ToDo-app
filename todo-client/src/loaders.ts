@@ -1,31 +1,9 @@
-import { apiUrl, audience } from "./lib/utils";
-import axios from "axios";
-import { LoaderFunction } from "react-router-dom";
+import { apiUrl } from "./lib/utils";
 import { Todo } from "./types";
-import { GetTokenSilentlyOptions } from "@auth0/auth0-react";
+import apiClient from "./lib/apiClient";
 
-interface TodosLoaderParams {
-  getAccessTokenSilently: (
-    options?: GetTokenSilentlyOptions
-  ) => Promise<string>;
-}
 
-export const todosLoader = ({
-  getAccessTokenSilently,
-}: TodosLoaderParams): LoaderFunction => {
-  return async () => {
-    const token = await getAccessTokenSilently({
-      authorizationParams: {
-        audience,
-      },
-    });
-
-    const todosResponse = await axios.get<Todo[]>(`${apiUrl}/api/todos`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+export const todosLoader = async () => {
+    const todosResponse = await apiClient.get<Todo[]>(`${apiUrl}/api/todos`);
     return todosResponse.data;
-  };
 };

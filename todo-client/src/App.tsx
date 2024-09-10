@@ -3,11 +3,11 @@ import Error from "./views/Error";
 import Todos from "./views/Todos";
 import Root from "./views/Root";
 import { todosLoader } from "./loaders";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo } from "react";
+import { useAxiosInterceptor } from "./lib/apiClient";
 
 export default function App() {
-  const { getAccessTokenSilently } = useAuth0();
+  useAxiosInterceptor();
 
   const router = useMemo(() => {
     return createBrowserRouter([
@@ -19,12 +19,12 @@ export default function App() {
           {
             path: "todos",
             element: <Todos />,
-            loader: todosLoader({ getAccessTokenSilently }),
+            loader: todosLoader,
           },
         ],
       },
     ]);
-  }, [getAccessTokenSilently]);
+  }, []);
 
   return <RouterProvider router={router} />;
 }
