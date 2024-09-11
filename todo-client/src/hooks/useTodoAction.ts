@@ -1,6 +1,6 @@
 import { Todo } from "@/types";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "kaarlejshadcn";
 import { format } from "date-fns";
 import { useRevalidator } from "react-router-dom";
 import apiClient, { useAxiosInterceptor } from "@/lib/apiClient";

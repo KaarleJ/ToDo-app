@@ -3,8 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { Auth0Provider } from "@auth0/auth0-react";
-import { ThemeProvider } from "./components/theme-provider.tsx";
-import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider, Toaster } from "kaarlejshadcn";
 
 const domain = import.meta.env.VITE_AUTH_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH_ID;
