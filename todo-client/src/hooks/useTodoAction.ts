@@ -3,12 +3,11 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { useRevalidator } from "react-router-dom";
-import apiClient, { useAxiosInterceptor } from "@/lib/apiClient";
+import apiClient from "@/lib/apiClient";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function useTodoAction() {
   const revalidator = useRevalidator();
-  useAxiosInterceptor();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
