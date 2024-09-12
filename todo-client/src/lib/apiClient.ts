@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { apiUrl, audience } from "./utils";
 
 const apiClient = axios.create({
@@ -10,7 +10,7 @@ const apiClient = axios.create({
 export const useAxiosInterceptor = () => {
   const { getAccessTokenSilently } = useAuth0(); // Access the Auth0 token fetching method
 
-  useEffect(() => {
+  useMemo(() => {
     const requestInterceptor = apiClient.interceptors.request.use(
       async (config) => {
         try {
@@ -31,7 +31,7 @@ export const useAxiosInterceptor = () => {
         return Promise.reject(error);
       }
     );
-
+    
     return () => {
       apiClient.interceptors.request.eject(requestInterceptor);
     };
