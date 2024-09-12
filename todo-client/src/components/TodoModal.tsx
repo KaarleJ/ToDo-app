@@ -7,13 +7,13 @@ import {
   ModalTitle,
   ModalTrigger,
   ModalBody,
-  Button,
-  FormMessage, Form
-} from "kaarlejshadcn";
+} from "@/components/ui/modal";
 import { Todo } from "@/types";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import TodoForm from "./TodoForm";
+import { Button } from "./ui/button";
+import { FormMessage, Form } from "./ui/form";
 import { z } from "zod";
 import { todoFormSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";

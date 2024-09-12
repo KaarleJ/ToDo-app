@@ -6,6 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+} from "@/components/ui/table";
+import {
   Modal,
   ModalClose,
   ModalContent,
@@ -13,17 +15,17 @@ import {
   ModalHeader,
   ModalTitle,
   ModalTrigger,
-  Input,
-  Button,
-  Form, FormMessage
-} from "kaarlejshadcn";
+} from "@/components/ui/modal";
 import TodoModal from "@/components/TodoModal";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { PlusIcon as Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { todoFormSchema } from "@/lib/schemas";
 import TodoForm from "@/components/TodoForm";
+import { Form, FormMessage } from "@/components/ui/form";
 import useTodoAction from "@/hooks/useTodoAction";
 import { format } from "date-fns";
 import { useState } from "react";

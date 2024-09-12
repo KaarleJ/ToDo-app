@@ -1,4 +1,4 @@
-import { Button } from "kaarlejshadcn";
+import { Button } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import Link from "@/components/Link";
 
