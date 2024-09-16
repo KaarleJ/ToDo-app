@@ -1,0 +1,2 @@
+# Ignore the ./src/components/ui folder from language statistics since it only contains copy pasted shadcn code.
+src/components/ui/* linguist-vendored
