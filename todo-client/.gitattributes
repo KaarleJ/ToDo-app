@@ -1,2 +1,5 @@
-# Ignore the ./src/components/ui folder from language statistics since it only contains copy pasted shadcn code.
+# Ignore shadcn code from language statistics since it only contains copy pasted code.
 src/components/ui/* linguist-vendored
+src/hooks/use-toast linguist-generated
+src/hooks/useMediaQuery linguist-generated
+src/hooks/useTheme linguist-generated
