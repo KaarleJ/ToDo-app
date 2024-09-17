@@ -1,5 +1,6 @@
 package com.todo.todoserver.service;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,8 @@ public class ToDoService {
 
     public Optional<List<ToDo>> getTodos(Authentication auth) {
         String id = jwtService.getIdFromToken(auth);
-        return toDoRepository.findByAuthorAuthId(id);
+        Sort sort = Sort.by(Sort.Direction.ASC, "deadline");
+        return toDoRepository.findByAuthorAuthId(id, sort);
     }
 
     public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
