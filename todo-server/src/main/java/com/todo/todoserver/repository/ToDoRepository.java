@@ -3,6 +3,7 @@ package com.todo.todoserver.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,7 @@ public interface ToDoRepository
 
         @Query("SELECT t FROM ToDo t WHERE t.author.authId = :authId")
         Optional<List<ToDo>> findByAuthorAuthId(@Param("authId") String authId);
+
+        @Query("SELECT t FROM ToDo t WHERE t.author.authId = :authId")
+        Optional<List<ToDo>> findByAuthorAuthId(@Param("authId") String authId, Sort sort);
 }
