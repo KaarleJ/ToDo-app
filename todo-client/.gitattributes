@@ -1,5 +1,5 @@
 # Ignore shadcn code from language statistics since it only contains copy pasted code.
 src/components/ui/* linguist-vendored
-src/hooks/use-toast linguist-generated
-src/hooks/useMediaQuery linguist-generated
-src/hooks/useTheme linguist-generated
+src/hooks/use-toast.ts linguist-generated
+src/hooks/useMediaQuery.ts linguist-generated
+src/hooks/useTheme.tsx linguist-generated
