@@ -16,7 +16,7 @@ export default function Landing() {
           ToDo-App!
         </p>
         <Button
-          className="text-foreground my-4 text-xl"
+          className="my-4 text-xl"
           size="lg"
           asChild={isAuthenticated}
         >
