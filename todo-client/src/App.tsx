@@ -20,6 +20,7 @@ export default function App() {
             path: "todos",
             element: <Todos />,
             loader: todosLoader,
+            errorElement: <Error />,
           },
         ],
       },
