@@ -8,7 +8,7 @@ export default function Landing() {
     <div className="h-full flex my-20 mx-4 md:mx-0">
       <div className="w-full">
         <h1>Write up tasks you want done</h1>
-        <h3 className="mb-6 text-muted-foreground">ToDo-App on web</h3>
+        <h3 className="mb-6 text-muted-foreground mt-2">ToDo-App on web</h3>
         <p className="max-w-2xl overflow-hidden text-lg my-12">
           Your ultimate solution for managing tasks efficiently and effectively.
           Juggle multiple projects or simply keep track of daily chores. Get
