@@ -12,7 +12,7 @@ export default function Error() {
   const typedError = error as RouteError;
 
   return (
-    <div className="text-center text-primary">
+    <div className="text-center text-primary w-full">
       <h1>Oops!</h1>
       <h2>An unexpected error has occurred.</h2>
       <p>
