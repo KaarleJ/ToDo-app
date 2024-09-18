@@ -21,7 +21,7 @@ import { useState } from "react";
 
 export default function ToolBar() {
   return (
-    <div className="absolute bottom-4 right-4 flex flex-col items-center justify-between">
+    <div className="absolute bottom-6 right-8 flex flex-col items-center justify-between">
       <AddTodoModal />
     </div>
   );
