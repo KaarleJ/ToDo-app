@@ -22,4 +22,12 @@ public interface ToDoRepository
 
         @Query("SELECT t FROM ToDo t WHERE t.author.authId = :authId")
         Optional<List<ToDo>> findByAuthorAuthId(@Param("authId") String authId, Sort sort);
+
+        @Query("SELECT t FROM ToDo t WHERE t.author.authId = :authId AND t.status = :status")
+        Optional<List<ToDo>> findByAuthorAuthIdAndStatus(@Param("authId") String authId,
+                        @Param("status") boolean status);
+
+        @Query("SELECT t FROM ToDo t WHERE t.author.authId = :authId AND t.status = :status")
+        Optional<List<ToDo>> findByAuthorAuthIdAndStatus(@Param("authId") String authId,
+                        @Param("status") boolean status, Sort sort);
 }

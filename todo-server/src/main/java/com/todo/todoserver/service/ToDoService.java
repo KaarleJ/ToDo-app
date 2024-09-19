@@ -12,6 +12,7 @@ import com.todo.todoserver.model.request.ToDoRequest;
 import com.todo.todoserver.repository.ToDoRepository;
 import com.todo.todoserver.repository.UserRepository;
 
+import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -25,10 +26,25 @@ public class ToDoService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public Optional<List<ToDo>> getTodos(Authentication auth) {
+    public Optional<List<ToDo>> getTodos(Authentication auth, @Nullable String show, @Nullable String sort) {
         String id = jwtService.getIdFromToken(auth);
-        Sort sort = Sort.by(Sort.Direction.ASC, "deadline");
-        return toDoRepository.findByAuthorAuthId(id, sort);
+        Sort.Direction sortDirection = Sort.Direction.ASC;
+    
+        if ("desc".equalsIgnoreCase(sort)) {
+            sortDirection = Sort.Direction.DESC;
+        }
+
+        Sort sortOrder = Sort.by(sortDirection, "deadline");
+        if ("finished".equalsIgnoreCase(show)) {
+            System.out.println("finished");
+            return toDoRepository.findByAuthorAuthIdAndStatus(id, true, sortOrder);
+        } else if ("unfinished".equalsIgnoreCase(show)) {
+            System.out.println("unfinished");
+            return toDoRepository.findByAuthorAuthIdAndStatus(id, false, sortOrder);
+        } else {
+            System.out.println("all");
+            return toDoRepository.findByAuthorAuthId(id, sortOrder);
+        }
     }
 
     public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
