@@ -9,7 +9,7 @@ import {
 } from "./ui/dropdown-menu";
 import type { User } from "@auth0/auth0-react";
 import Link from "./Link";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "./ui/mode-toggle";
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth0();
