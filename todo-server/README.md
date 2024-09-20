@@ -1,1 +1,0 @@
-This directory contains the backend for the ToDo-App built with Spring Boot. 
