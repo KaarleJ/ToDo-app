@@ -14,8 +14,13 @@ import { Todo } from "@/types";
 import TopMenu from "./TopMenu";
 import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Todos() {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  if (!isAuthenticated) {
+    loginWithRedirect();
+  }
   const data = useLoaderData() as { todos: Todo[] };
   return (
     <div className="border rounded-md w-full h-[30rem] mb-24 flex flex-col">

@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { useAuth0 } from "@auth0/auth0-react";
 import Link from "@/components/Link";
 
 export default function Landing() {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
   return (
     <div className="h-full flex my-20 mx-4 md:mx-0">
       <div className="w-full">
@@ -18,13 +16,9 @@ export default function Landing() {
         <Button
           className="my-4 text-xl"
           size="lg"
-          asChild={isAuthenticated}
+          asChild={true}
         >
-          {isAuthenticated ? (
             <Link to="/todos">Get Started</Link>
-          ) : (
-            <a onClick={() => loginWithRedirect()}>Get Started</a>
-          )}
         </Button>
       </div>
       <div className="w-full relative hidden md:flex">
