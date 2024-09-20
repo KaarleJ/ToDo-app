@@ -1,5 +1,7 @@
 package com.todo.todoserver.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,38 +32,38 @@ public class ToDoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getTodos(
+    public ResponseEntity<List<ToDo>> getTodos(
             Authentication auth,
             @RequestParam(value = "show", required = false) String show,
             @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "search", required = false) String search) {
         try {
-            return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search));
+            return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search).orElseThrow());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error fetching todo: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
     @PutMapping
-    public ResponseEntity<?> updateToDo(@RequestBody ToDo toDo, Authentication auth) {
+    public ResponseEntity<ToDo> updateToDo(@RequestBody ToDo toDo, Authentication auth) {
         try {
             return ResponseEntity.ok(toDoService.updateToDo(toDo, auth));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error updating todo: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> addNewToDo(@RequestBody ToDoRequest treq, Authentication auth) {
+    public ResponseEntity<ToDo> addNewToDo(@RequestBody ToDoRequest treq, Authentication auth) {
         try {
             return ResponseEntity.ok(toDoService.addNewToDo(treq, auth));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error adding new todo: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteToDo(@PathVariable Long id, Authentication auth) {
+    public ResponseEntity<String> deleteToDo(@PathVariable Long id, Authentication auth) {
         try {
             toDoService.deleteToDo(id, auth);
             return ResponseEntity.ok("Todo deleted");
