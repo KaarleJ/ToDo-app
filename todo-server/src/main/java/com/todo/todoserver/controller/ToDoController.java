@@ -30,10 +30,13 @@ public class ToDoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getTodos(Authentication auth, @RequestParam(value = "show", required = false) String show,
-            @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<?> getTodos(
+            Authentication auth,
+            @RequestParam(value = "show", required = false) String show,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "search", required = false) String search) {
         try {
-            return ResponseEntity.ok(toDoService.getTodos(auth, show, sort));
+            return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error fetching todo: " + e.getMessage());
         }

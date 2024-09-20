@@ -26,25 +26,25 @@ public class ToDoService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public Optional<List<ToDo>> getTodos(Authentication auth, @Nullable String show, @Nullable String sort) {
+    public Optional<List<ToDo>> getTodos(Authentication auth, @Nullable String show, @Nullable String sort,
+            @Nullable String search) {
         String id = jwtService.getIdFromToken(auth);
-        Sort.Direction sortDirection = Sort.Direction.ASC;
-    
+        Sort.Direction sortDirection = Sort.Direction.ASC; // Default to ASC
+
         if ("desc".equalsIgnoreCase(sort)) {
             sortDirection = Sort.Direction.DESC;
         }
 
-        Sort sortOrder = Sort.by(sortDirection, "deadline");
+        Sort sortOrder = Sort.by(sortDirection, "deadline"); // Sort by "deadline" field
+
+        Boolean status = null;
         if ("finished".equalsIgnoreCase(show)) {
-            System.out.println("finished");
-            return toDoRepository.findByAuthorAuthIdAndStatus(id, true, sortOrder);
+            status = true;
         } else if ("unfinished".equalsIgnoreCase(show)) {
-            System.out.println("unfinished");
-            return toDoRepository.findByAuthorAuthIdAndStatus(id, false, sortOrder);
-        } else {
-            System.out.println("all");
-            return toDoRepository.findByAuthorAuthId(id, sortOrder);
+            status = false;
         }
+
+        return toDoRepository.findTodos(id, status, search, sortOrder);
     }
 
     public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
