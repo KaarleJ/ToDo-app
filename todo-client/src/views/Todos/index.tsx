@@ -12,14 +12,13 @@ import { format } from "date-fns";
 import { Await, useLoaderData } from "react-router-dom";
 import { Todo } from "@/types";
 import TopMenu from "./TopMenu";
-import ToolBar from "./ToolBar";
 import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
 
 export default function Todos() {
   const data = useLoaderData() as { todos: Todo[] };
   return (
-    <div className="border rounded-md w-full h-[30rem] mb-24 relative flex flex-col">
+    <div className="border rounded-md w-full h-[30rem] mb-24 flex flex-col">
       <Suspense fallback={<TodosSkeleton />}>
         <Await resolve={data.todos}>
           {(todos: Todo[]) => (
@@ -57,7 +56,6 @@ export default function Todos() {
                   ))}
                 </TableBody>
               </Table>
-              <ToolBar />
             </>
           )}
         </Await>

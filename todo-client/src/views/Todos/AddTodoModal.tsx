@@ -19,15 +19,9 @@ import { Form, FormMessage } from "@/components/ui/form";
 import useTodoAction from "@/hooks/useTodoAction";
 import { useState } from "react";
 
-export default function ToolBar() {
-  return (
-    <div className="absolute bottom-6 right-8 flex flex-col items-center justify-between">
-      <AddTodoModal />
-    </div>
-  );
-}
 
-function AddTodoModal() {
+
+export default function AddTodoModal() {
   const { isLoading, createTodo } = useTodoAction();
   const [open, setOpen] = useState(false);
 
@@ -53,8 +47,8 @@ function AddTodoModal() {
   return (
     <Modal open={open} onOpenChange={setOpen}>
       <ModalTrigger asChild>
-        <Button className="rounded-full w-10 h-10 px-0 py-0">
-          <Plus size={26} />
+        <Button className=" px-4 py-2">
+          Create <Plus size={22} className="ml-1"/>
         </Button>
       </ModalTrigger>
       <ModalContent className="flex flex-col p-4">
