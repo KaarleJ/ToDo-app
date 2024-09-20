@@ -49,31 +49,27 @@ public class ToDoService {
 
     public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
         String id = jwtService.getIdFromToken(auth);
-        Optional<ToDo> optionalToDo = toDoRepository.findById(oldTodo.getId());
+        ToDo newTodo = toDoRepository.findById(oldTodo.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found"));
 
-        if (optionalToDo.isPresent()) {
-            ToDo newTodo = optionalToDo.get();
-
-            if (!newTodo.getAuthor().getAuthId().equals(id)) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this todo");
-            }
-
-            newTodo.setTitle(oldTodo.getTitle());
-            newTodo.setText(oldTodo.getText());
-            newTodo.setStatus(oldTodo.getStatus());
-            newTodo.setDeadline(oldTodo.getDeadline());
-
-            toDoRepository.save(newTodo);
-
-            return newTodo;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDo not found");
+        if (!newTodo.getAuthor().getAuthId().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this todo");
         }
+
+        newTodo.setTitle(oldTodo.getTitle());
+        newTodo.setText(oldTodo.getText());
+        newTodo.setStatus(oldTodo.getStatus());
+        newTodo.setDeadline(oldTodo.getDeadline());
+
+        toDoRepository.save(newTodo);
+
+        return newTodo;
     }
 
     public ToDo addNewToDo(ToDoRequest treq, Authentication auth) {
         String id = jwtService.getIdFromToken(auth);
-        User author = userRepository.findByAuthId(id).orElseThrow();
+        User author = userRepository.findByAuthId(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         var todo = ToDo.builder()
                 .title(treq.getTitle())
                 .text(treq.getText())
@@ -87,15 +83,13 @@ public class ToDoService {
 
     public void deleteToDo(Long id, Authentication auth) {
         String authId = jwtService.getIdFromToken(auth);
-        Optional<ToDo> optionalToDo = toDoRepository.findById(id);
-        if (optionalToDo.isPresent()) {
-            ToDo toDo = optionalToDo.get();
-            if (!toDo.getAuthor().getAuthId().equals(authId)) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this todo");
-            }
-            toDoRepository.delete(toDo);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDo not found");
+        ToDo todo = toDoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDo not found"));
+
+        if (!todo.getAuthor().getAuthId().equals(authId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this todo");
         }
+
+        toDoRepository.delete(todo);
     }
 }

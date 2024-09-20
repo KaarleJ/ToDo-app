@@ -37,38 +37,22 @@ public class ToDoController {
             @RequestParam(value = "show", required = false) String show,
             @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "search", required = false) String search) {
-        try {
-            return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search).orElseThrow());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search).orElseThrow());
     }
 
     @PutMapping
     public ResponseEntity<ToDo> updateToDo(@RequestBody ToDo toDo, Authentication auth) {
-        try {
-            return ResponseEntity.ok(toDoService.updateToDo(toDo, auth));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(toDoService.updateToDo(toDo, auth));
     }
 
     @PostMapping
     public ResponseEntity<ToDo> addNewToDo(@RequestBody ToDoRequest treq, Authentication auth) {
-        try {
-            return ResponseEntity.ok(toDoService.addNewToDo(treq, auth));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        return ResponseEntity.ok(toDoService.addNewToDo(treq, auth));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteToDo(@PathVariable Long id, Authentication auth) {
-        try {
-            toDoService.deleteToDo(id, auth);
-            return ResponseEntity.ok("Todo deleted");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error deleting todo: " + e.getMessage());
-        }
+        toDoService.deleteToDo(id, auth);
+        return ResponseEntity.ok("Todo deleted");
     }
 }

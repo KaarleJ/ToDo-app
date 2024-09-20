@@ -1,8 +1,10 @@
 package com.todo.todoserver.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.todo.todoserver.model.User;
 import com.todo.todoserver.model.request.UserRequest;
@@ -20,22 +22,22 @@ public class UserService {
     String id = jwtService.getIdFromToken(auth);
 
     var newUser = User.builder()
-    .authId(id)
-    .username(user.getUsername())
-    .email(user.getEmail())
-    .profilePicture(user.getProfilePicture())
-    .build();
+        .authId(id)
+        .username(user.getUsername())
+        .email(user.getEmail())
+        .profilePicture(user.getProfilePicture())
+        .build();
     return userRepository.save(newUser);
   }
 
   public User getUser(Authentication auth) {
     Jwt jwt = (Jwt) auth.getPrincipal();
     String sub = jwt.getSubject();
-    //Split the subject from | and get the last element
+    // Split the subject from | and get the last element
     String[] parts = sub.split("\\|");
     String id = parts[parts.length - 1];
-    return userRepository.findByAuthId(id).orElseThrow();
+    return userRepository.findByAuthId(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
   }
 
-  
 }

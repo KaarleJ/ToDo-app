@@ -26,20 +26,12 @@ public class UserController {
 
   @GetMapping
   public ResponseEntity<?> getUser(Authentication auth) {
-    try {
-      return ResponseEntity.ok(userService.getUser(auth));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Error adding fetching user: " + e.getMessage());
-    }
+    return ResponseEntity.ok(userService.getUser(auth));
   }
 
   @PostMapping
   public ResponseEntity<?> addNewUser(@RequestBody UserRequest ureq, Authentication auth) {
-    try {
-      return ResponseEntity.ok(userService.addUser(ureq, auth));
-    } catch (Exception e) {
-      return ResponseEntity.badRequest().body("Error adding new user: " + e.getMessage());
-    }
+    return ResponseEntity.ok(userService.addUser(ureq, auth));
   }
 
 }
