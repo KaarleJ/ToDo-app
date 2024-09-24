@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ToDoServiceImpl implements ToDoService {
+public class ToDoServiceImpl implements IToDoService {
 
     private final ToDoRepository toDoRepository;
     private final UserRepository userRepository;

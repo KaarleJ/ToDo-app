@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
-public interface ToDoController {
+public interface IToDoController {
     ResponseEntity<List<ToDo>> getTodos(Authentication auth, String show, String sort, String search);
     ResponseEntity<ToDo> updateToDo(ToDo toDo, Authentication auth);
     ResponseEntity<ToDo> addNewToDo(ToDoRequest treq, Authentication auth);

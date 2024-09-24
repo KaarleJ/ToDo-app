@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 import java.util.Optional;
 
-public interface ToDoService {
+public interface IToDoService {
     Optional<List<ToDo>> getTodos(Authentication auth, String show, String sort, String search);
     ToDo updateToDo(ToDo oldTodo, Authentication auth);
     ToDo addNewToDo(ToDoRequest treq, Authentication auth);

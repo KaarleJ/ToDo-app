@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.todo.todoserver.model.ToDo;
 import com.todo.todoserver.model.request.ToDoRequest;
-import com.todo.todoserver.service.ToDoService;
+import com.todo.todoserver.service.IToDoService;
 import com.todo.todoserver.service.ToDoServiceImpl;
 
 @RestController
 @RequestMapping(path = "api/todos")
-public class ToDoControllerImpl implements ToDoController {
+public class ToDoControllerImpl implements IToDoController {
 
-    private final ToDoService toDoService;
+    private final IToDoService toDoService;
 
     @Autowired
     public ToDoControllerImpl(ToDoServiceImpl toDoService) {
