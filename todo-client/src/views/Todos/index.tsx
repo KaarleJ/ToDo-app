@@ -15,6 +15,7 @@ import TopMenu from "./TopMenu";
 import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
 import { useAuth0 } from "@auth0/auth0-react";
+import { CircleCheck as Finished, CircleMinus as UnFinished } from "lucide-react";
 
 export default function Todos() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
@@ -23,38 +24,38 @@ export default function Todos() {
   }
   const data = useLoaderData() as { todos: Todo[] };
   return (
-    <div className="border rounded-md w-full h-[30rem] mb-24 flex flex-col">
+    <div className="border rounded-md w-full h-[50rem] mb-24 flex flex-col">
       <Suspense fallback={<TodosSkeleton />}>
         <Await resolve={data.todos}>
           {(todos: Todo[]) => (
             <>
               <TopMenu />
 
-              <Table>
+              <Table className="table-fixed">
                 <TableCaption>A list of your tasks</TableCaption>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Task</TableHead>
+                    <TableHead className="w-32 md:w-60">Task</TableHead>
                     <TableHead>Content</TableHead>
-                    <TableHead>Deadline</TableHead>
-                    <TableHead className="text-right">Status</TableHead>
+                    <TableHead className="text-right w-20">Deadline</TableHead>
+                    <TableHead className="text-right w-14">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {todos.map((todo) => (
                     <TodoModal todo={todo} key={todo.id}>
                       <TableRow>
-                        <TableCell className="text-nowrap w-max">
+                        <TableCell width={36} className="truncate">
                           {todo.title}
                         </TableCell>
-                        <TableCell className=" text-nowrap">
+                        <TableCell className="truncate">
                           {todo.text}
                         </TableCell>
-                        <TableCell className="w-32">
+                        <TableCell className="text-right">
                           {format(new Date(todo.deadline), "d.M.yyyy")}
                         </TableCell>
-                        <TableCell className="text-right w-32">
-                          {todo.status ? "Finished" : "Unfinished"}
+                        <TableCell className="flex justify-end">
+                          {todo.status ? <Finished className="text-primary" aria-details="Finished" /> : <UnFinished className="text-muted-foreground" aria-details="Unfinished" />}
                         </TableCell>
                       </TableRow>
                     </TodoModal>
