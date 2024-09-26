@@ -15,7 +15,7 @@ import TopMenu from "./TopMenu";
 import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
 import { useAuth0 } from "@auth0/auth0-react";
-import { CircleCheck as Finished, CircleMinus as UnFinished } from "lucide-react";
+import { CircleCheck as Finished, Ellipsis as UnFinished } from "lucide-react";
 
 export default function Todos() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
