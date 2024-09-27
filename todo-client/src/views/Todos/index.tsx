@@ -38,7 +38,7 @@ export default function Todos() {
                     <TableHead className="w-32 md:w-60">Task</TableHead>
                     <TableHead>Content</TableHead>
                     <TableHead className="text-right w-20">Deadline</TableHead>
-                    <TableHead className="text-right w-14">Status</TableHead>
+                    <TableHead className="text-center w-14 md:w-20">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -54,7 +54,7 @@ export default function Todos() {
                         <TableCell className="text-right">
                           {format(new Date(todo.deadline), "d.M.yyyy")}
                         </TableCell>
-                        <TableCell className="flex justify-end">
+                        <TableCell className="flex justify-center">
                           {todo.status ? <Finished className="text-primary" aria-details="Finished" /> : <UnFinished className="text-muted-foreground" aria-details="Unfinished" />}
                         </TableCell>
                       </TableRow>
