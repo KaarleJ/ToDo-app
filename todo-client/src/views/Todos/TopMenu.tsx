@@ -96,23 +96,22 @@ export default function TopMenu() {
     } else {
       return (
         <>
-        <Input name="search" placeholder="filter task" />
-        <Button className="border shadow-sm p-2" variant="secondary">
-          <Search size={26} />
-        </Button>
+          <Input name="search" placeholder="filter task" />
+          <Button className="border shadow-sm p-2" variant="secondary">
+            <Search size={26} />
+          </Button>
         </>
-        
       );
     }
   }
 
   return (
     <div className="w-full border-b h-min px-4 py-2 flex items-center justify-between rounded-t-md">
-      <div className="w-52">
+      <div className="w-max mr-4">
         <h3>Todos</h3>
-        <p className="brightness-75 text-sm">Manage your tasks</p>
+        <p className="brightness-75 text-sm hidden md:flex w-max">Manage your tasks</p>
       </div>
-      <div className="flex w-2/3 ml-4 justify-end gap-2 items-center">
+      <div className="flex w-full ml-4 justify-end gap-2 items-center">
         <MenuBar />
         <SearchBar />
         <div className="ml-2">

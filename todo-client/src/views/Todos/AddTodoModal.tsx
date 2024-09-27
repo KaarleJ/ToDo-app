@@ -1,4 +1,3 @@
-
 import {
   Modal,
   ModalClose,
@@ -18,12 +17,12 @@ import TodoForm from "@/components/TodoForm";
 import { Form, FormMessage } from "@/components/ui/form";
 import useTodoAction from "@/hooks/useTodoAction";
 import { useState } from "react";
-
-
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function AddTodoModal() {
   const { isLoading, createTodo } = useTodoAction();
   const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const form = useForm<z.infer<typeof todoFormSchema>>({
     resolver: zodResolver(todoFormSchema),
@@ -47,9 +46,15 @@ export default function AddTodoModal() {
   return (
     <Modal open={open} onOpenChange={setOpen}>
       <ModalTrigger asChild>
-        <Button className=" px-4 py-2">
-          Create <Plus size={22} className="ml-1"/>
-        </Button>
+        {isDesktop ? (
+          <Button className="px-4 py-2">
+            Create <Plus size={22} className="ml-1" />
+          </Button>
+        ) : (
+          <Button className="rounded-full px-2 py-2">
+            <Plus size={26}/>
+          </Button>
+        )}
       </ModalTrigger>
       <ModalContent className="flex flex-col p-4">
         <ModalHeader>
