@@ -95,12 +95,12 @@ export default function TopMenu() {
       );
     } else {
       return (
-        <>
+        <form onSubmit={handleSubmit} className="flex gap-2">
           <Input name="search" placeholder="filter task" />
-          <Button className="border shadow-sm p-2" variant="secondary">
+          <Button type="submit" className="border shadow-sm p-2" variant="secondary">
             <Search size={26} />
           </Button>
-        </>
+        </form>
       );
     }
   }
