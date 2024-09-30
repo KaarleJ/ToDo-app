@@ -20,7 +20,10 @@ import { CircleCheck as Finished, Ellipsis as UnFinished } from "lucide-react";
 export default function Todos() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   if (!isAuthenticated) {
-    loginWithRedirect();
+    console.log(location.pathname);
+    loginWithRedirect({
+      appState: { returnTo: location.pathname },
+    });
   }
   const data = useLoaderData() as { todos: Todo[] };
   return (

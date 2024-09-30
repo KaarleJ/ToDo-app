@@ -4,16 +4,19 @@ import Todos from "./views/Todos";
 import Root from "./views/Root";
 import { todosLoader } from "./loaders";
 import { useMemo } from "react";
-import { useAxiosInterceptor } from "./lib/apiClient";
+import Auth0ProviderWithNavigate from "./components/Auth0ProviderWithNavigate";
 
 export default function App() {
-  useAxiosInterceptor();
 
   const router = useMemo(() => {
     return createBrowserRouter([
       {
         path: "/",
-        element: <Root />,
+        element: (
+          <Auth0ProviderWithNavigate>
+            <Root />
+          </Auth0ProviderWithNavigate>
+        ),
         errorElement: <Error />,
         children: [
           {
