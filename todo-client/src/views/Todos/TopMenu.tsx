@@ -106,7 +106,7 @@ export default function TopMenu() {
   }
 
   return (
-    <div className="w-full border-b h-min px-4 py-2 flex items-center justify-between rounded-t-md">
+    <div className="w-full border-b h-min px-1 md:px-4 py-2 flex items-center justify-between rounded-t-md">
       <div className="w-max mr-4">
         <h3>Todos</h3>
         <p className="brightness-75 text-sm hidden md:flex w-max">Manage your tasks</p>

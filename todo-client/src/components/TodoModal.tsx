@@ -102,14 +102,14 @@ export default function TodoModal({
           )}
         </ModalBody>
         {!edit && (
-          <div className="flex justify-between pt-4">
-            <div className="flex">
+          <div className="flex justify-between">
+            <div className="flex pl-4">
               <Button onClick={() => setEdit(true)}>Edit</Button>
               <Button
                 onClick={onDelete}
                 disabled={isLoading}
                 variant="destructive"
-                className="ml-6"
+                className="ml-4"
               >
                 Delete
               </Button>
@@ -120,7 +120,7 @@ export default function TodoModal({
                 />
               )}
             </div>
-            <ModalClose>Close</ModalClose>
+            <ModalClose className="mr-4 px-4">Close</ModalClose>
           </div>
         )}
       </ModalContent>
