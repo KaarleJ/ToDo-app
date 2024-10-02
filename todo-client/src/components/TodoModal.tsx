@@ -85,7 +85,7 @@ export default function TodoModal({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
+                className="space-y-8 py-2"
               >
                 <TodoForm form={form} />
                 <div className="flex justify-between">
@@ -102,8 +102,8 @@ export default function TodoModal({
           )}
         </ModalBody>
         {!edit && (
-          <div className="flex justify-between">
-            <div className="flex pl-4">
+          <div className="flex justify-between px-4 py-2 md:px-0 md:py-0">
+            <div className="flex">
               <Button onClick={() => setEdit(true)}>Edit</Button>
               <Button
                 onClick={onDelete}
@@ -120,7 +120,7 @@ export default function TodoModal({
                 />
               )}
             </div>
-            <ModalClose className="mr-4 px-4">Close</ModalClose>
+            <ModalClose className="px-4">Close</ModalClose>
           </div>
         )}
       </ModalContent>
