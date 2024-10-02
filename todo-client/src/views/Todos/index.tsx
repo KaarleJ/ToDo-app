@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -16,6 +15,7 @@ import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { CircleCheck as Finished, Ellipsis as UnFinished } from "lucide-react";
+import PagesBar from "./PagesBar";
 
 export default function Todos() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
@@ -35,7 +35,6 @@ export default function Todos() {
               <TopMenu />
 
               <Table className="table-fixed">
-                <TableCaption>A list of your tasks</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-32 md:w-60">Task</TableHead>
@@ -65,6 +64,7 @@ export default function Todos() {
                   ))}
                 </TableBody>
               </Table>
+              <PagesBar />
             </>
           )}
         </Await>
