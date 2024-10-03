@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRevalidator, useSearchParams } from "react-router-dom";
 import {
   Menubar,
   MenubarContent,
@@ -18,22 +17,15 @@ import { Label } from "@/components/ui/label";
 import { Settings2 as Filter, Search } from "lucide-react";
 import AddTodoModal from "./AddTodoModal";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import useQueryParams from "@/hooks/useQueryParams";
 
 export default function TopMenu() {
-  const revalidator = useRevalidator();
-  const [search, setSearch] = useSearchParams();
+  const { updateSearch } = useQueryParams();
 
-  function updateSearch(key: string, value: string) {
-    const newParams = new URLSearchParams(search);
-    newParams.set(key, value);
-    setSearch(newParams);
-    revalidator.revalidate();
-  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     updateSearch("search", e.currentTarget.search.value);
-    revalidator.revalidate();
   }
 
   function MenuBar() {
