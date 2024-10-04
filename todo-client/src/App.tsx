@@ -4,19 +4,13 @@ import Todos from "./views/Todos";
 import Root from "./views/Root";
 import { todosLoader } from "./loaders";
 import { useMemo } from "react";
-import Auth0ProviderWithNavigate from "./components/Auth0ProviderWithNavigate";
 
 export default function App() {
-
   const router = useMemo(() => {
     return createBrowserRouter([
       {
         path: "/",
-        element: (
-          <Auth0ProviderWithNavigate>
-            <Root />
-          </Auth0ProviderWithNavigate>
-        ),
+        element: <Root />,
         errorElement: <Error />,
         children: [
           {

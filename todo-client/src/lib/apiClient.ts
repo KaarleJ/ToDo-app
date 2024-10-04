@@ -8,7 +8,7 @@ const apiClient = axios.create({
 });
 
 export const useAxiosInterceptor = () => {
-  const { getAccessTokenSilently } = useAuth0(); // Access the Auth0 token fetching method
+  const { getAccessTokenSilently } = useAuth0();
 
   useMemo(() => {
     const requestInterceptor = apiClient.interceptors.request.use(
@@ -20,7 +20,7 @@ export const useAxiosInterceptor = () => {
             },
           });
           if (token) {
-            config.headers.Authorization = `Bearer ${token}`; // Add token to request headers
+            config.headers.Authorization = `Bearer ${token}`;
           }
         } catch (error) {
           console.error("Error fetching access token", error);
@@ -31,7 +31,7 @@ export const useAxiosInterceptor = () => {
         return Promise.reject(error);
       }
     );
-    
+
     return () => {
       apiClient.interceptors.request.eject(requestInterceptor);
     };

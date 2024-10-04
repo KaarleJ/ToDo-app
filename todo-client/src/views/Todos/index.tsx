@@ -20,7 +20,6 @@ import PagesBar from "./PagesBar";
 export default function Todos() {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   if (!isAuthenticated) {
-    console.log(location.pathname);
     loginWithRedirect({
       appState: { returnTo: location.pathname },
     });
