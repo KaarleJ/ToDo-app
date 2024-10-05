@@ -24,5 +24,5 @@ export const todosLoader = async (
       audience,
     },
   });
-  return defer({ todos: getTodos(request, token) });
+  return defer({ page: getTodos(request, token) });
 };
