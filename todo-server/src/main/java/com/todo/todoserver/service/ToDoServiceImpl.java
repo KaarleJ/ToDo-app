@@ -4,16 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.todo.todoserver.model.ToDo;
 import com.todo.todoserver.model.User;
 import com.todo.todoserver.model.request.ToDoRequest;
 import com.todo.todoserver.repository.ToDoRepository;
-import com.todo.todoserver.repository.UserRepository;
 
 import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +20,19 @@ import lombok.RequiredArgsConstructor;
 public class ToDoServiceImpl implements IToDoService {
 
     private final ToDoRepository toDoRepository;
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final UserService userService;
+    private final AuthorizationService authorizationService;
 
     public Page<ToDo> getTodos(Authentication auth, @Nullable String show, @Nullable String sort,
             @Nullable String search, int page, int size) {
-        String id = jwtService.getIdFromToken(auth);
-        Sort.Direction sortDirection = Sort.Direction.ASC; // Default to ASC
+        String id = authorizationService.getUserIdFromAuth(auth);
+        Sort.Direction sortDirection = Sort.Direction.ASC;
 
         if ("desc".equalsIgnoreCase(sort)) {
             sortDirection = Sort.Direction.DESC;
         }
 
-        Sort sortOrder = Sort.by(sortDirection, "deadline"); // Sort by "deadline" field
+        Sort sortOrder = Sort.by(sortDirection, "deadline");
 
         Boolean status = null;
         if ("finished".equalsIgnoreCase(show)) {
@@ -50,28 +47,19 @@ public class ToDoServiceImpl implements IToDoService {
     }
 
     public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
-        String id = jwtService.getIdFromToken(auth);
-        ToDo newTodo = toDoRepository.findById(oldTodo.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found"));
-
-        if (!newTodo.getAuthor().getAuthId().equals(id)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this todo");
-        }
+        String authId = authorizationService.getUserIdFromAuth(auth);
+        ToDo newTodo = authorizationService.verifyToDoOwnership(oldTodo.getId(), authId);
 
         newTodo.setTitle(oldTodo.getTitle());
         newTodo.setText(oldTodo.getText());
         newTodo.setStatus(oldTodo.getStatus());
         newTodo.setDeadline(oldTodo.getDeadline());
 
-        toDoRepository.save(newTodo);
-
-        return newTodo;
+        return toDoRepository.save(newTodo);
     }
 
     public ToDo addNewToDo(ToDoRequest treq, Authentication auth) {
-        String id = jwtService.getIdFromToken(auth);
-        User author = userRepository.findByAuthId(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        User author = userService.getUser(auth);
         var todo = ToDo.builder()
                 .title(treq.getTitle())
                 .text(treq.getText())
@@ -84,13 +72,8 @@ public class ToDoServiceImpl implements IToDoService {
     }
 
     public void deleteToDo(Long id, Authentication auth) {
-        String authId = jwtService.getIdFromToken(auth);
-        ToDo todo = toDoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ToDo not found"));
-
-        if (!todo.getAuthor().getAuthId().equals(authId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this todo");
-        }
+        String authId = authorizationService.getUserIdFromAuth(auth);
+        ToDo todo = authorizationService.verifyToDoOwnership(id, authId);
 
         toDoRepository.delete(todo);
     }
