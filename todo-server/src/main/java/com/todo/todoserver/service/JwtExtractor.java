@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class JwtService {
+public class JwtExtractor {
   public String getIdFromToken(Authentication auth) {
     if (auth == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
