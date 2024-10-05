@@ -1,8 +1,7 @@
 package com.todo.todoserver.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
@@ -33,12 +32,14 @@ public class ToDoControllerImpl implements IToDoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ToDo>> getTodos(
+    public ResponseEntity<Page<ToDo>> getTodos(
             Authentication auth,
             @RequestParam(value = "show", required = false) String show,
             @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "search", required = false) String search) {
-        return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search).orElseThrow());
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+        return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search, page, size));
     }
 
     @PutMapping

@@ -1,5 +1,8 @@
 package com.todo.todoserver.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -15,9 +18,6 @@ import com.todo.todoserver.repository.UserRepository;
 import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class ToDoServiceImpl implements IToDoService {
@@ -26,8 +26,8 @@ public class ToDoServiceImpl implements IToDoService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    public Optional<List<ToDo>> getTodos(Authentication auth, @Nullable String show, @Nullable String sort,
-            @Nullable String search) {
+    public Page<ToDo> getTodos(Authentication auth, @Nullable String show, @Nullable String sort,
+            @Nullable String search, int page, int size) {
         String id = jwtService.getIdFromToken(auth);
         Sort.Direction sortDirection = Sort.Direction.ASC; // Default to ASC
 
@@ -44,7 +44,9 @@ public class ToDoServiceImpl implements IToDoService {
             status = false;
         }
 
-        return toDoRepository.findTodos(id, status, search, sortOrder);
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+
+        return toDoRepository.findTodos(id, status, search, pageable);
     }
 
     public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
