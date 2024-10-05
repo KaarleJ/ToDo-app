@@ -60,6 +60,7 @@ public class ToDoServiceImpl implements IToDoService {
 
     public ToDo addNewToDo(ToDoRequest treq, Authentication auth) {
         User author = userService.getUser(auth);
+
         var todo = ToDo.builder()
                 .title(treq.getTitle())
                 .text(treq.getText())
@@ -68,6 +69,7 @@ public class ToDoServiceImpl implements IToDoService {
                 .deadline(treq.getDeadline())
                 .status(treq.getStatus())
                 .build();
+
         return toDoRepository.save(todo);
     }
 
