@@ -20,7 +20,8 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import useQueryParams from "@/hooks/useQueryParams";
 
 export default function TopMenu() {
-  const { updateSearch } = useQueryParams();
+  const { search, updateSearch } = useQueryParams();
+  const defaultSearch = search.get("search") || "";
 
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -75,7 +76,7 @@ export default function TopMenu() {
     if (isDesktop) {
       return (
         <form onSubmit={handleSubmit} className="flex">
-          <Input name="search" placeholder="filter task" />
+          <Input name="search" placeholder="filter task" defaultValue={defaultSearch} />
           <Button
             type="submit"
             className="ml-2 border shadow-sm"
