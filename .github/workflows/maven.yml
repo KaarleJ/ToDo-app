@@ -55,7 +55,7 @@ jobs:
         docker images
 
     - name: Tag Docker Image
-      run: docker tag todo-image:latest registry.fly.io/springtodoapp:latest
+      run: docker tag todo-server:0.0.1-SNAPSHOT registry.fly.io/springtodoapp:latest
 
     - name: Push Docker Image to Fly.io
       run: docker push registry.fly.io/springtodoapp:latest
