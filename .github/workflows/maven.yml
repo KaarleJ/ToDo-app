@@ -54,7 +54,7 @@ jobs:
         mvn -Pnative spring-boot:build-image
 
     - name: Tag Docker Image
-      run: docker tag myproject:0.0.1-SNAPSHOT registry.fly.io/springtodoapp:latest
+      run: docker tag todo-server:latest registry.fly.io/springtodoapp:latest
 
     - name: Push Docker Image to Fly.io
       run: docker push registry.fly.io/springtodoapp:latest
