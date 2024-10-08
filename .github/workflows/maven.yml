@@ -2,13 +2,12 @@ name: Project build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     env:
@@ -23,49 +22,49 @@ jobs:
       OKTA_AUDIENCE: ${{ secrets.OKTA_AUDIENCE }}
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Node 20
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: Set up Node 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
-    - name: Build React frontend
-      run: |
-        cd todo-client
-        npm install
-        npm run build
+      - name: Build React frontend
+        run: |
+          cd todo-client
+          npm install
+          npm run build
 
-    - name: Copy React Build to Spring App static folder
-      run: |
-        mkdir -p todo-server/src/main/resources/static
-        cp -r todo-client/dist/* todo-server/src/main/resources/static/
-      
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
+      - name: Copy React Build to Spring App static folder
+        run: |
+          mkdir -p todo-server/src/main/resources/static
+          cp -r todo-client/dist/* todo-server/src/main/resources/static/
 
-    - name: Build native image with Maven
-      run: |
-        cd todo-server
-        mvn -Pnative spring-boot:build-image
-        docker images
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
 
-    - name: Tag Docker Image
-      run: docker tag todo-server:0.0.1-SNAPSHOT registry.fly.io/springtodoapp:latest
+      - name: Build native image with Maven
+        run: |
+          cd todo-server
+          mvn -Pnative spring-boot:build-image
+          docker images
 
-    - name: Push Docker Image to Fly.io
-      run: docker push registry.fly.io/springtodoapp:latest
-    
-    - name: Set up Fly.io
-      uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Tag Docker Image
+        run: docker tag todo-server:0.0.1-SNAPSHOT registry.fly.io/springtodoapp:latest
 
-    - name: Deploy to Fly.io
-      run: flyctl deploy --image registry.fly.io/springtodoapp:latest
-      env:
-        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Push Docker Image to Fly.io
+        run: docker push registry.fly.io/springtodoapp:latest
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
+      - name: Set up Fly.io
+        uses: superfly/flyctl-actions/setup-flyctl@master
 
+      - name: Deploy to Fly.io
+        run: flyctl deploy --image registry.fly.io/springtodoapp:latest
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
