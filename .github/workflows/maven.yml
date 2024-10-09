@@ -51,7 +51,6 @@ jobs:
         run: |
           cd todo-server
           mvn -Pnative spring-boot:build-image
-          docker images
 
       - name: Tag Docker Image
         run: docker tag todo-server:0.0.1-SNAPSHOT registry.fly.io/springtodoapp:latest
@@ -60,7 +59,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: registry.fly.io
-          username: fly
+          username: x
           password: ${{ secrets.FLY_API_TOKEN }}
 
       - name: Push Docker Image to Fly.io
