@@ -6,9 +6,10 @@ import { todosLoader } from "./loaders";
 import { useMemo } from "react";
 import { useAxiosInterceptor } from "./lib/apiClient";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AuthenticationGuard } from "./components/AuthenticationGuard";
 
 export default function App() {
-  const { getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   useAxiosInterceptor();
   const router = useMemo(() => {
     return createBrowserRouter([
@@ -19,16 +20,16 @@ export default function App() {
         children: [
           {
             path: "todos",
-            element: <Todos />,
+            element: <AuthenticationGuard component={Todos}/>,
             loader: function({ request }) {
-              return todosLoader(request, getAccessTokenSilently);
+              return todosLoader(request, isAuthenticated);
             },
             errorElement: <Error />,
           },
         ],
       },
     ]);
-  }, [getAccessTokenSilently]);
+  }, [isAuthenticated]);
 
   return <RouterProvider router={router} />;
 }

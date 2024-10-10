@@ -13,17 +13,10 @@ import { Todo, TodosPage } from "@/types";
 import TopMenu from "./TopMenu";
 import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
-import { useAuth0 } from "@auth0/auth0-react";
 import { CircleCheck as Finished, Ellipsis as UnFinished } from "lucide-react";
 import PagesBar from "./PagesBar";
 
 export default function Todos() {
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
-  if (!isAuthenticated) {
-    loginWithRedirect({
-      appState: { returnTo: location.pathname },
-    });
-  }
   const data = useLoaderData() as { page: Todo[] };
   return (
     <div className="border rounded-md w-full h-[50rem] mb-24 flex flex-col">
@@ -72,7 +65,12 @@ export default function Todos() {
                   ))}
                 </TableBody>
               </Table>
-              <PagesBar pages={page.totalPages} first={page.first} last={page.last} number={page.number + 1} />
+              <PagesBar
+                pages={page.totalPages}
+                first={page.first}
+                last={page.last}
+                number={page.number + 1}
+              />
             </>
           )}
         </Await>
