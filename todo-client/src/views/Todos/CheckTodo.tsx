@@ -8,7 +8,8 @@ import { Todo } from "@/types";
 export default function CheckTodo({ todo }: { todo: Todo }) {
   const { isLoading, updateTodo } = useTodoAction();
 
-  async function changeStatus(todo: Todo) {
+  async function changeStatus(e: MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
     try {
       await updateTodo({
         ...todo,
@@ -34,10 +35,7 @@ export default function CheckTodo({ todo }: { todo: Todo }) {
         className="rounded-full"
         variant="outline"
         size="icon"
-        onClick={(e: MouseEvent<HTMLButtonElement>) => {
-          e.stopPropagation();
-          changeStatus(todo);
-        }}
+        onClick={changeStatus}
       >
         {todo.status && <Finished className="text-green-600" size={24} />}
       </Button>
