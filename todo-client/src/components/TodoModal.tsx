@@ -37,7 +37,7 @@ export default function TodoModal({
       title: todo.title,
       text: todo.text,
       status: todo.status,
-      deadline: todo.deadline,
+      deadline: new Date(todo.deadline),
     },
   });
 
