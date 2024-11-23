@@ -13,8 +13,8 @@ import { Todo, TodosPage } from "@/types";
 import TopMenu from "./TopMenu";
 import { Suspense } from "react";
 import TodosSkeleton from "./TodosSkeleton";
-import { CircleCheck as Finished, Ellipsis as UnFinished } from "lucide-react";
 import PagesBar from "./PagesBar";
+import CheckTodo from "./CheckTodo";
 
 export default function Todos() {
   const data = useLoaderData() as { page: Todo[] };
@@ -47,19 +47,7 @@ export default function Todos() {
                         <TableCell className="text-right">
                           {format(new Date(todo.deadline), "d.M.yyyy")}
                         </TableCell>
-                        <TableCell className="flex justify-center">
-                          {todo.status ? (
-                            <Finished
-                              className="text-primary"
-                              aria-details="Finished"
-                            />
-                          ) : (
-                            <UnFinished
-                              className="text-muted-foreground"
-                              aria-details="Unfinished"
-                            />
-                          )}
-                        </TableCell>
+                        <CheckTodo todo={todo} />
                       </TableRow>
                     </TodoModal>
                   ))}
