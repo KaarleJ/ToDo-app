@@ -15,19 +15,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todo.todoserver.dto.ToDoRequest;
+import com.todo.todoserver.dto.ToDoResponse;
 import com.todo.todoserver.model.ToDo;
-import com.todo.todoserver.model.request.ToDoRequest;
-import com.todo.todoserver.service.IToDoService;
+import com.todo.todoserver.service.ToDoService;
 import com.todo.todoserver.service.ToDoServiceImpl;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/todos")
-public class ToDoControllerImpl implements IToDoController {
+public class ToDoController {
 
-    private final IToDoService toDoService;
+    private final ToDoService toDoService;
 
     @Autowired
-    public ToDoControllerImpl(ToDoServiceImpl toDoService) {
+    public ToDoController(ToDoServiceImpl toDoService) {
         this.toDoService = toDoService;
     }
 
@@ -42,14 +45,15 @@ public class ToDoControllerImpl implements IToDoController {
         return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search, page - 1, size));
     }
 
-    @PutMapping
-    public ResponseEntity<ToDo> updateToDo(@RequestBody ToDo toDo, Authentication auth) {
-        return ResponseEntity.ok(toDoService.updateToDo(toDo, auth));
+    @PostMapping
+    public ResponseEntity<ToDoResponse> createToDo(@RequestBody @Valid ToDoRequest treq, Authentication auth) {
+        return ResponseEntity.ok(toDoService.createToDo(treq, auth));
     }
 
-    @PostMapping
-    public ResponseEntity<ToDo> addNewToDo(@RequestBody ToDoRequest treq, Authentication auth) {
-        return ResponseEntity.ok(toDoService.addNewToDo(treq, auth));
+    @PutMapping("/{id}")
+    public ResponseEntity<ToDoResponse> updateToDo(@PathVariable Long id, @RequestBody @Valid ToDoRequest toDoRequest,
+            Authentication auth) {
+        return ResponseEntity.ok(toDoService.updateToDo(toDoRequest, id, auth));
     }
 
     @DeleteMapping("/{id}")

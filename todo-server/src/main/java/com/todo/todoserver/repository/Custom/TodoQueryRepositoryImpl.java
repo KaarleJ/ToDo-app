@@ -14,7 +14,7 @@ import jakarta.persistence.criteria.*;
 import java.util.List;
 
 @Repository
-public class CustomTodoRepositoryImpl implements CustomTodoRepository {
+public class TodoQueryRepositoryImpl implements TodoQueryRepository {
 
   @Autowired
   private EntityManager entityManager;

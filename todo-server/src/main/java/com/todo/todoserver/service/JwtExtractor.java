@@ -14,7 +14,6 @@ public class JwtExtractor {
     }
     Jwt jwt = (Jwt) auth.getPrincipal();
     String sub = jwt.getSubject();
-    //Split the subject from | and get the last element
     String[] parts = sub.split("\\|");
     return parts[parts.length - 1];
   }

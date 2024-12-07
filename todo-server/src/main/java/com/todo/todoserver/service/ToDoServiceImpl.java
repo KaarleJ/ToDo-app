@@ -7,9 +7,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.todo.todoserver.dto.ToDoRequest;
+import com.todo.todoserver.dto.ToDoResponse;
+import com.todo.todoserver.mapper.ToDoMapper;
 import com.todo.todoserver.model.ToDo;
 import com.todo.todoserver.model.User;
-import com.todo.todoserver.model.request.ToDoRequest;
 import com.todo.todoserver.repository.ToDoRepository;
 
 import io.micrometer.common.lang.Nullable;
@@ -17,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ToDoServiceImpl implements IToDoService {
+public class ToDoServiceImpl implements ToDoService {
 
     private final ToDoRepository toDoRepository;
     private final UserService userService;
@@ -46,31 +48,31 @@ public class ToDoServiceImpl implements IToDoService {
         return toDoRepository.findTodos(id, status, search, pageable);
     }
 
-    public ToDo updateToDo(ToDo oldTodo, Authentication auth) {
+    public ToDoResponse updateToDo(ToDoRequest oldTodoRequest, Long id, Authentication auth) {
         String authId = authorizationService.getUserIdFromAuth(auth);
-        ToDo newTodo = authorizationService.verifyToDoOwnership(oldTodo.getId(), authId);
+        ToDo newTodo = authorizationService.verifyToDoOwnership(id, authId);
 
-        newTodo.setTitle(oldTodo.getTitle());
-        newTodo.setText(oldTodo.getText());
-        newTodo.setStatus(oldTodo.getStatus());
-        newTodo.setDeadline(oldTodo.getDeadline());
+        newTodo.setTitle(oldTodoRequest.getTitle());
+        newTodo.setText(oldTodoRequest.getText());
+        newTodo.setStatus(oldTodoRequest.getStatus());
+        newTodo.setDeadline(oldTodoRequest.getDeadline());
 
-        return toDoRepository.save(newTodo);
+        return ToDoMapper.toResponse(toDoRepository.save(newTodo));
     }
 
-    public ToDo addNewToDo(ToDoRequest treq, Authentication auth) {
+    public ToDoResponse createToDo(ToDoRequest toDoRequest, Authentication auth) {
         User author = userService.getUser(auth);
 
         var todo = ToDo.builder()
-                .title(treq.getTitle())
-                .text(treq.getText())
+                .title(toDoRequest.getTitle())
+                .text(toDoRequest.getText())
                 .status(false)
                 .author(author)
-                .deadline(treq.getDeadline())
-                .status(treq.getStatus())
+                .deadline(toDoRequest.getDeadline())
+                .status(toDoRequest.getStatus())
                 .build();
 
-        return toDoRepository.save(todo);
+        return ToDoMapper.toResponse(toDoRepository.save(todo));
     }
 
     public void deleteToDo(Long id, Authentication auth) {

@@ -1,4 +1,4 @@
-package com.todo.todoserver.model.request;
+package com.todo.todoserver.dto;
 
 import java.time.LocalDate;
 
@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ToDoRequest {
+public class ToDoResponse {
+  private Long id;
   private String title;
   private String text;
+  private UserResponse author;
   private LocalDate deadline;
   private Boolean status;
 }

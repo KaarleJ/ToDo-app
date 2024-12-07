@@ -1,4 +1,4 @@
-package com.todo.todoserver.model.request;
+package com.todo.todoserver.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class UserResponse {
+  private Long id;
   private String username;
   private String email;
   private String profilePicture;

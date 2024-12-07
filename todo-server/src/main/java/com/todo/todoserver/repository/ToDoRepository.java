@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.todo.todoserver.model.ToDo;
-import com.todo.todoserver.repository.Custom.CustomTodoRepository;
+import com.todo.todoserver.repository.Custom.TodoQueryRepository;
 
 @Repository
-public interface ToDoRepository extends JpaRepository<ToDo, Long>, CustomTodoRepository {
+public interface ToDoRepository extends JpaRepository<ToDo, Long>, TodoQueryRepository  {
 }
