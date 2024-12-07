@@ -48,7 +48,7 @@ export default function useTodoAction() {
     };
     try {
       const response = await apiClient.put(
-        `${apiUrl}/api/todos`,
+        `${apiUrl}/api/todos/${todo.id}`,
         formattedTodo
       );
       toast({
