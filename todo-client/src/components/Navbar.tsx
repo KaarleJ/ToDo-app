@@ -7,13 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import type { User } from "@auth0/auth0-react";
 import Link from "./Link";
 import { ModeToggle } from "./ui/mode-toggle";
 
 export default function Navbar() {
-  const { user, isAuthenticated } = useAuth0();
-
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const handleLogout = () => {
+    logout({ logoutParams: { returnTo: window.location.origin } });
+  };
   return (
     <div className="w-screen md:px-24 md:py-6 fixed top-0 left-0 z-10">
       <nav className="py-2 px-4 md:px-36 bg-primary shadow-xl md:rounded-full text-xl text-center flex flex-row justify-between items-center md:mr-4">
@@ -28,56 +29,34 @@ export default function Navbar() {
         </Link>
         <div className="flex items-center justify-between w-24">
           <ModeToggle />
-          {isAuthenticated ? <AvatarMenu user={user} /> : <LoginButton />}
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <img
+                  src={user?.picture}
+                  className="object-fill w-10 h-10 rounded-full"
+                  alt="User Avatar"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="hover:cursor-pointer"
+                >
+                  Log Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              onClick={() => loginWithRedirect()}
+              className="text-xl hover:underline w-10"
+            >
+              Log In
+            </Button>
+          )}
         </div>
       </nav>
     </div>
-  );
-}
-
-function LoginButton() {
-  const { loginWithRedirect } = useAuth0();
-
-  return (
-    <Button
-      onClick={() => loginWithRedirect()}
-      className="text-xl hover:underline w-10"
-    >
-      Log In
-    </Button>
-  );
-}
-
-function LogoutButton() {
-  const { logout } = useAuth0();
-
-  return (
-    <Button
-      variant={"ghost"}
-      onClick={() =>
-        logout({ logoutParams: { returnTo: window.location.origin } })
-      }
-      className="px-1 py-1"
-    >
-      Log Out
-    </Button>
-  );
-}
-
-function AvatarMenu({ user }: { user: User | undefined }) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <img
-          src={user?.picture}
-          className="object-fill w-10 h-10 rounded-full"
-        ></img>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem>
-          <LogoutButton />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }

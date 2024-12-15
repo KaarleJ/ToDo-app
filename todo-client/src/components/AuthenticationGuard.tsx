@@ -10,6 +10,5 @@ export const AuthenticationGuard = ({
   const Component = withAuthenticationRequired(component, {
     onRedirecting: () => <div className="h-[30rem] w-full flex justify-center items-center"><Loader size={42} className="animate-spin" /></div>,
   });
-
   return <Component />;
 };

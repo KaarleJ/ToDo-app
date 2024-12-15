@@ -10,35 +10,27 @@ export default function CheckTodo({ todo }: { todo: Todo }) {
 
   async function changeStatus(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
-    try {
-      await updateTodo({
-        ...todo,
-        deadline: new Date(todo.deadline),
-        status: !todo.status,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <TableCell className="flex justify-center items-center h-[4.5rem]">
-        <LoaderCircle className="animate-spin" />
-      </TableCell>
-    );
+    await updateTodo({
+      ...todo,
+      deadline: new Date(todo.deadline),
+      status: !todo.status,
+    });
   }
 
   return (
-    <TableCell className="flex justify-center">
-      <Button
-        className="rounded-full"
-        variant="outline"
-        size="icon"
-        onClick={changeStatus}
-      >
-        {todo.status && <Finished className="text-green-600" size={24} />}
-      </Button>
+    <TableCell className="flex justify-center items-center h-[4.5rem]">
+      {isLoading ? (
+        <LoaderCircle className="animate-spin" />
+      ) : (
+        <Button
+          className="rounded-full"
+          variant="outline"
+          size="icon"
+          onClick={changeStatus}
+        >
+          {todo.status && <Finished className="text-green-600" size={24} />}
+        </Button>
+      )}
     </TableCell>
   );
 }

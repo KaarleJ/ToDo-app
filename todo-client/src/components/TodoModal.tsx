@@ -30,7 +30,6 @@ export default function TodoModal({
 }) {
   const { isLoading, updateTodo, deleteTodo } = useTodoAction();
   const [edit, setEdit] = useState(false);
-
   const form = useForm<z.infer<typeof todoFormSchema>>({
     resolver: zodResolver(todoFormSchema),
     defaultValues: {
@@ -40,27 +39,14 @@ export default function TodoModal({
       deadline: new Date(todo.deadline),
     },
   });
-
   async function onSubmit(data: z.infer<typeof todoFormSchema>) {
-    try {
-      await updateTodo({
-        ...data,
-        id: todo.id,
-      });
-      setEdit(false);
-    } catch (e) {
-      console.error(e);
-    }
+    await updateTodo({
+      ...data,
+      id: todo.id,
+    });
+    setEdit(false);
   }
-
-  async function onDelete() {
-    try {
-      await deleteTodo(todo.id);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
+  const onDelete = async () => await deleteTodo(todo.id);
   return (
     <Modal>
       <ModalTrigger asChild className="hover:cursor-pointer">
