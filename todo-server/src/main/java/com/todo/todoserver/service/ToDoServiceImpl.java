@@ -7,14 +7,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.todo.todoserver.dto.ToDoQueryParameters;
 import com.todo.todoserver.dto.ToDoRequest;
 import com.todo.todoserver.dto.ToDoResponse;
 import com.todo.todoserver.mapper.ToDoMapper;
 import com.todo.todoserver.model.ToDo;
 import com.todo.todoserver.model.User;
 import com.todo.todoserver.repository.ToDoRepository;
+import com.todo.todoserver.utils.ToDoQueryHelper;
 
-import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,27 +26,15 @@ public class ToDoServiceImpl implements ToDoService {
     private final UserService userService;
     private final AuthorizationService authorizationService;
 
-    public Page<ToDo> getTodos(Authentication auth, @Nullable String show, @Nullable String sort,
-            @Nullable String search, int page, int size) {
-        String id = authorizationService.getUserIdFromAuth(auth);
-        Sort.Direction sortDirection = Sort.Direction.ASC;
+    public Page<ToDoResponse> getTodos(Authentication auth, ToDoQueryParameters queryParameters) {
+        String authId = authorizationService.getUserIdFromAuth(auth);
 
-        if ("desc".equalsIgnoreCase(sort)) {
-            sortDirection = Sort.Direction.DESC;
-        }
+        Sort sortOrder = ToDoQueryHelper.getSort(queryParameters.getSort());
+        Boolean status = ToDoQueryHelper.getStatusFilter(queryParameters.getShow());
+        Pageable pageable = PageRequest.of(queryParameters.getPage() - 1, queryParameters.getSize(), sortOrder);
 
-        Sort sortOrder = Sort.by(sortDirection, "deadline");
-
-        Boolean status = null;
-        if ("finished".equalsIgnoreCase(show)) {
-            status = true;
-        } else if ("unfinished".equalsIgnoreCase(show)) {
-            status = false;
-        }
-
-        Pageable pageable = PageRequest.of(page, size, sortOrder);
-
-        return toDoRepository.findTodos(id, status, search, pageable);
+        Page<ToDo> todos = toDoRepository.findTodos(authId, status, queryParameters.getSearch(), pageable);
+        return todos.map(ToDoMapper::toResponse);
     }
 
     public ToDoResponse updateToDo(ToDoRequest oldTodoRequest, Long id, Authentication auth) {

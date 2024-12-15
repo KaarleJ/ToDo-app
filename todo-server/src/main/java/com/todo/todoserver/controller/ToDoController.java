@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todo.todoserver.dto.ToDoQueryParameters;
 import com.todo.todoserver.dto.ToDoRequest;
 import com.todo.todoserver.dto.ToDoResponse;
-import com.todo.todoserver.model.ToDo;
 import com.todo.todoserver.service.ToDoService;
-import com.todo.todoserver.service.ToDoServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -30,19 +29,15 @@ public class ToDoController {
     private final ToDoService toDoService;
 
     @Autowired
-    public ToDoController(ToDoServiceImpl toDoService) {
+    public ToDoController(ToDoService toDoService) {
         this.toDoService = toDoService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<ToDo>> getTodos(
+    public ResponseEntity<Page<ToDoResponse>> getTodos(
             Authentication auth,
-            @RequestParam(value = "show", required = false) String show,
-            @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-        return ResponseEntity.ok(toDoService.getTodos(auth, show, sort, search, page - 1, size));
+            @Valid ToDoQueryParameters queryParameters) {
+        return ResponseEntity.ok(toDoService.getTodos(auth, queryParameters));
     }
 
     @PostMapping

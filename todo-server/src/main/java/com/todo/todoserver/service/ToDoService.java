@@ -1,14 +1,14 @@
 package com.todo.todoserver.service;
 
+import com.todo.todoserver.dto.ToDoQueryParameters;
 import com.todo.todoserver.dto.ToDoRequest;
 import com.todo.todoserver.dto.ToDoResponse;
-import com.todo.todoserver.model.ToDo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
 public interface ToDoService {
-    Page<ToDo> getTodos(Authentication auth, String show, String sort, String search, int page, int size);
+    Page<ToDoResponse> getTodos(Authentication auth, ToDoQueryParameters queryParameters);
 
     ToDoResponse updateToDo(ToDoRequest toDoRequest, Long id, Authentication auth);
 

@@ -1,4 +1,4 @@
-package com.todo.todoserver.config;
+package com.todo.todoserver.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +14,23 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex, WebRequest request) {
+    public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex,
+            WebRequest request) {
         Map<String, String> errorDetails = new HashMap<>();
+
         errorDetails.put("message", ex.getReason());
         errorDetails.put("status", ex.getStatusCode().toString());
+
         return new ResponseEntity<>(errorDetails, ex.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGlobalException(Exception ex, WebRequest request) {
         Map<String, String> errorDetails = new HashMap<>();
+
         errorDetails.put("message", ex.getMessage());
         errorDetails.put("status", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
