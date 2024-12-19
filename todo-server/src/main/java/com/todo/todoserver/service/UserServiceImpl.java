@@ -1,7 +1,6 @@
 package com.todo.todoserver.service;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
-  private final JwtExtractor jwtExtractor;
+  private final AuthorizationService authorizationService;
 
-  public User addUser(UserRequest user, Authentication auth) {
-    String id = jwtExtractor.getIdFromToken(auth);
+  public User addUser(UserRequest user) {
+    String id = authorizationService.getUserId();
 
     var newUser = User.builder()
         .authId(id)
@@ -29,8 +28,8 @@ public class UserServiceImpl implements UserService {
     return userRepository.save(newUser);
   }
 
-  public User getUser(Authentication auth) {
-    String id = jwtExtractor.getIdFromToken(auth);
+  public User getUser() {
+    String id = authorizationService.getUserId();
     return userRepository.findByAuthId(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
   }

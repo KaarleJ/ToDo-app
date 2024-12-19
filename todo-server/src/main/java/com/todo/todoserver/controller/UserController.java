@@ -2,7 +2,6 @@ package com.todo.todoserver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +24,13 @@ public class UserController {
   }
 
   @GetMapping
-  public ResponseEntity<?> getUser(Authentication auth) {
-    return ResponseEntity.ok(userService.getUser(auth));
+  public ResponseEntity<?> getUser() {
+    return ResponseEntity.ok(userService.getUser());
   }
 
   @PostMapping
-  public ResponseEntity<?> addNewUser(@RequestBody UserRequest ureq, Authentication auth) {
-    return ResponseEntity.ok(userService.addUser(ureq, auth));
+  public ResponseEntity<?> addNewUser(@RequestBody UserRequest ureq) {
+    return ResponseEntity.ok(userService.addUser(ureq));
   }
 
 }

@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.todo.todoserver.dto.ToDoQueryParameters;
@@ -26,8 +25,8 @@ public class ToDoServiceImpl implements ToDoService {
     private final UserService userService;
     private final AuthorizationService authorizationService;
 
-    public Page<ToDoResponse> getTodos(Authentication auth, ToDoQueryParameters queryParameters) {
-        String authId = authorizationService.getUserIdFromAuth(auth);
+    public Page<ToDoResponse> getTodos(ToDoQueryParameters queryParameters) {
+        String authId = authorizationService.getUserId();
 
         Sort sortOrder = ToDoQueryHelper.getSort(queryParameters.getSort());
         Boolean status = ToDoQueryHelper.getStatusFilter(queryParameters.getShow());
@@ -37,9 +36,8 @@ public class ToDoServiceImpl implements ToDoService {
         return todos.map(ToDoMapper::toResponse);
     }
 
-    public ToDoResponse updateToDo(ToDoRequest oldTodoRequest, Long id, Authentication auth) {
-        String authId = authorizationService.getUserIdFromAuth(auth);
-        ToDo newTodo = authorizationService.verifyToDoOwnership(id, authId);
+    public ToDoResponse updateToDo(ToDoRequest oldTodoRequest, Long id) {
+        ToDo newTodo = authorizationService.verifyToDoOwnership(id);
 
         newTodo.setTitle(oldTodoRequest.getTitle());
         newTodo.setText(oldTodoRequest.getText());
@@ -49,8 +47,8 @@ public class ToDoServiceImpl implements ToDoService {
         return ToDoMapper.toResponse(toDoRepository.save(newTodo));
     }
 
-    public ToDoResponse createToDo(ToDoRequest toDoRequest, Authentication auth) {
-        User author = userService.getUser(auth);
+    public ToDoResponse createToDo(ToDoRequest toDoRequest) {
+        User author = userService.getUser();
 
         var todo = ToDo.builder()
                 .title(toDoRequest.getTitle())
@@ -64,9 +62,8 @@ public class ToDoServiceImpl implements ToDoService {
         return ToDoMapper.toResponse(toDoRepository.save(todo));
     }
 
-    public void deleteToDo(Long id, Authentication auth) {
-        String authId = authorizationService.getUserIdFromAuth(auth);
-        ToDo todo = authorizationService.verifyToDoOwnership(id, authId);
+    public void deleteToDo(Long id) {
+        ToDo todo = authorizationService.verifyToDoOwnership(id);
 
         toDoRepository.delete(todo);
     }

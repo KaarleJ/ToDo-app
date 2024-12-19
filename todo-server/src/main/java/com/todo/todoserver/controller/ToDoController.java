@@ -3,7 +3,6 @@ package com.todo.todoserver.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,26 +32,23 @@ public class ToDoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ToDoResponse>> getTodos(
-            Authentication auth,
-            @Valid ToDoQueryParameters queryParameters) {
-        return ResponseEntity.ok(toDoService.getTodos(auth, queryParameters));
+    public ResponseEntity<Page<ToDoResponse>> getTodos(@Valid ToDoQueryParameters queryParameters) {
+        return ResponseEntity.ok(toDoService.getTodos(queryParameters));
     }
 
     @PostMapping
-    public ResponseEntity<ToDoResponse> createToDo(@RequestBody @Valid ToDoRequest treq, Authentication auth) {
-        return ResponseEntity.ok(toDoService.createToDo(treq, auth));
+    public ResponseEntity<ToDoResponse> createToDo(@RequestBody @Valid ToDoRequest treq) {
+        return ResponseEntity.ok(toDoService.createToDo(treq));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ToDoResponse> updateToDo(@PathVariable Long id, @RequestBody @Valid ToDoRequest toDoRequest,
-            Authentication auth) {
-        return ResponseEntity.ok(toDoService.updateToDo(toDoRequest, id, auth));
+    public ResponseEntity<ToDoResponse> updateToDo(@PathVariable Long id, @RequestBody @Valid ToDoRequest toDoRequest) {
+        return ResponseEntity.ok(toDoService.updateToDo(toDoRequest, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteToDo(@PathVariable Long id, Authentication auth) {
-        toDoService.deleteToDo(id, auth);
+    public ResponseEntity<String> deleteToDo(@PathVariable Long id) {
+        toDoService.deleteToDo(id);
         return ResponseEntity.ok("Todo deleted");
     }
 }

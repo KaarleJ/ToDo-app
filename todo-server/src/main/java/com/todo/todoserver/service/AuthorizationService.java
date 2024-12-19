@@ -1,11 +1,10 @@
 package com.todo.todoserver.service;
 
-import org.springframework.security.core.Authentication;
 import com.todo.todoserver.model.ToDo;
 
 public interface AuthorizationService {
 
-  public String getUserIdFromAuth(Authentication auth);
+  public String getUserId();
 
-  public ToDo verifyToDoOwnership(Long toDoId, String authId);
+  public ToDo verifyToDoOwnership(Long toDoId);
 }
