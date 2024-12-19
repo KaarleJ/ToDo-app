@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.todo.todoserver.dto.UserRequest;
+import com.todo.todoserver.dto.UserResponse;
+import com.todo.todoserver.mapper.UserMapper;
 import com.todo.todoserver.service.UserService;
 
 @RestController
@@ -24,13 +26,13 @@ public class UserController {
   }
 
   @GetMapping
-  public ResponseEntity<?> getUser() {
-    return ResponseEntity.ok(userService.getUser());
+  public ResponseEntity<UserResponse> getUser() {
+    return ResponseEntity.ok(UserMapper.toResponse(userService.getUser()));
   }
 
   @PostMapping
-  public ResponseEntity<?> addNewUser(@RequestBody UserRequest ureq) {
-    return ResponseEntity.ok(userService.addUser(ureq));
+  public ResponseEntity<UserResponse> addNewUser(@RequestBody UserRequest ureq) {
+    return ResponseEntity.ok(UserMapper.toResponse(userService.addUser(ureq)));
   }
 
 }
