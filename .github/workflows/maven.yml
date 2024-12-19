@@ -62,6 +62,11 @@ jobs:
           java-version: "21"
           distribution: "temurin"
 
+      - name: Run backend tests
+        run: |
+          cd todo-server
+          mvn test
+
       - name: Build native image with Maven
         run: |
           cd todo-server
