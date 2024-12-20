@@ -7,9 +7,9 @@ export default function Root() {
   const { pathname } = useLocation();
 
   return (
-    <div className="font-sans antialiased min-h-screen mt-20">
+    <div className="font-sans antialiased min-h-screen mt-16 md:mt-20">
       <Navbar />
-      <div className="md:px-28 py-5 md:py-24 flex flex-col justify-start items-start w-full">
+      <div className="md:px-28 py-6 md:py-12 flex flex-col justify-start items-start w-full">
         {pathname === "/" ? <Landing /> : <Outlet />}
       </div>
       <Footer />
