@@ -19,7 +19,7 @@ import CheckTodo from "./CheckTodo";
 export default function Todos() {
   const data = useLoaderData() as { page: Todo[] };
   return (
-    <div className="border rounded-md mb-6 md:mb-12 min-h-[45rem] md:min-h-[40rem] 3xl:min-h-[55rem] flex flex-col">
+    <div className="border rounded-md mb-6 md:mb-12 min-h-[45rem] md:min-h-[40rem] 3xl:min-h-[55rem] flex flex-col relative pb-8">
       <Suspense fallback={<TodosSkeleton />}>
         <Await resolve={data.page}>
           {(page: TodosPage) => (

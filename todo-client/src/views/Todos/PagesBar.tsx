@@ -25,7 +25,7 @@ export default function PagesBar({
   const page = Number(search.get("page")) || 1;
   const displayedPages = resolveDisplayedPages(pages, number);
   return (
-    <Pagination>
+    <Pagination className="absolute bottom-0 right-0">
       <PaginationContent>
         <PaginationItem>
           <Button
