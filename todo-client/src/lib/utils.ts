@@ -11,5 +11,12 @@ export const resolveDisplayedPages = (pages: number, number: number) => {
   return Array.from({ length: 5 }, (_, i) => number - 2 + i);
 };
 
+export function calculateItemsPerPage() {
+  const height = window.innerHeight;
+  if (height >= 1440) return 15;
+  if (height >= 1080) return 10;
+  return 8;
+}
+
 export const apiUrl = import.meta.env.VITE_API_URL;
 export const audience = import.meta.env.VITE_AUTH_AUDIENCE;
