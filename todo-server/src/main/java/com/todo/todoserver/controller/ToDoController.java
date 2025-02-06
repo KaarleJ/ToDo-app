@@ -32,7 +32,7 @@ public class ToDoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ToDoResponse>> getTodos(@Valid ToDoQueryParameters queryParameters) {
+    public ResponseEntity<Page<ToDoResponse>> getTodos(ToDoQueryParameters queryParameters) {
         return ResponseEntity.ok(toDoService.getTodos(queryParameters));
     }
 
