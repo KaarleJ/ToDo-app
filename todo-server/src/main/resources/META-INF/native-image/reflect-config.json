@@ -1,0 +1,8 @@
+[
+  {
+    "name": "com.todo.todoserver.dto.ToDoQueryParameters",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true
+  }
+]

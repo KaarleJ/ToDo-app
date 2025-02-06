@@ -34,27 +34,24 @@ class ToDoControllerTest {
   @MockBean
   private ToDoService toDoService;
 
-  /*
-   * @Test
-   * 
-   * @WithMockUser(username = "user")
-   * void getAllTodos_ShouldReturnTodoList() throws Exception {
-   * ToDoResponse todo1 = TestHelper.createToDoResponse();
-   * ToDoResponse todo2 = TestHelper.createToDoResponse();
-   * ToDoQueryParameters queryParameters = new ToDoQueryParameters();
-   * 
-   * Page<ToDoResponse> todoPage = new PageImpl<>(Arrays.asList(todo1, todo2));
-   * 
-   * when(toDoService.getTodos(queryParameters)).thenReturn(todoPage);
-   * 
-   * mockMvc.perform(get("/api/todos"))
-   * .andExpect(status().isOk())
-   * .andExpect(jsonPath("$.content[0].id").value(todo1.getId()))
-   * .andExpect(jsonPath("$.content[0].title").value(todo1.getTitle()))
-   * .andExpect(jsonPath("$.content[1].id").value(todo2.getId()))
-   * .andExpect(jsonPath("$.content[1].title").value(todo2.getTitle()));
-   * }
-   */
+  @Test
+  @WithMockUser(username = "user")
+  void getAllTodos_ShouldReturnTodoList() throws Exception {
+    ToDoResponse todo1 = TestHelper.createToDoResponse();
+    ToDoResponse todo2 = TestHelper.createToDoResponse();
+    ToDoQueryParameters queryParameters = new ToDoQueryParameters();
+
+    Page<ToDoResponse> todoPage = new PageImpl<>(Arrays.asList(todo1, todo2));
+
+    when(toDoService.getTodos(queryParameters)).thenReturn(todoPage);
+
+    mockMvc.perform(get("/api/todos"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.content[0].id").value(todo1.getId()))
+        .andExpect(jsonPath("$.content[0].title").value(todo1.getTitle()))
+        .andExpect(jsonPath("$.content[1].id").value(todo2.getId()))
+        .andExpect(jsonPath("$.content[1].title").value(todo2.getTitle()));
+  }
 
   @Test
   void createTodo_ShouldReturnCreatedTodo() throws Exception {
