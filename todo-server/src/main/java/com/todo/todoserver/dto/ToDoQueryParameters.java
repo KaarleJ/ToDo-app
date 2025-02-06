@@ -1,5 +1,7 @@
 package com.todo.todoserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +11,7 @@ import lombok.Builder.Default;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(onConstructor = @__(@JsonCreator))
 public class ToDoQueryParameters {
 
   private String show;
